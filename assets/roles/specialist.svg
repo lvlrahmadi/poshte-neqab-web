@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 760" role="img" aria-label="متخصص">
+<defs><linearGradient id="bg" x2="0.9" y2="1"><stop stop-color="#24151b"/><stop offset="1" stop-color="#090b11"/></linearGradient><radialGradient id="glow"><stop stop-color="#9b3943" stop-opacity=".55"/><stop offset="1" stop-color="#9b3943" stop-opacity="0"/></radialGradient><linearGradient id="gold" x2="1" y2="1"><stop stop-color="#f1d79c"/><stop offset="1" stop-color="#9b7441"/></linearGradient></defs>
+<rect width="600" height="760" rx="30" fill="url(#bg)"/><circle cx="300" cy="300" r="270" fill="url(#glow)"/>
+<path d="M28 28H572V732H28Z" fill="none" stroke="#b9955c" stroke-opacity=".5" stroke-width="2"/><path d="M48 48H552V712H48Z" fill="none" stroke="#b9955c" stroke-opacity=".18"/>
+<path d="M90 590 Q300 430 510 590 L550 710H50Z" fill="#090a0e" stroke="#b9955c" stroke-opacity=".42" stroke-width="3"/>
+<circle cx="300" cy="285" r="150" fill="#0c0d12" stroke="url(#gold)" stroke-width="3"/>
+<circle cx="300" cy="285" r="132" fill="none" stroke="#b9955c" stroke-opacity=".25" stroke-dasharray="4 12"/>
+<text x="300" y="345" text-anchor="middle" font-size="158" font-family="sans-serif">🧪</text>
+<path d="M160 490H440" stroke="url(#gold)" stroke-width="2"/><text x="300" y="550" fill="#f1dfbd" font-size="38" text-anchor="middle" font-family="Tahoma,Arial,sans-serif" font-weight="bold">متخصص</text>
+<text x="300" y="602" fill="#c8a66d" font-size="19" text-anchor="middle" font-family="Tahoma,Arial,sans-serif" letter-spacing="4">تحلیل‌گر شواهد</text>
+<text x="300" y="675" fill="#8b7a66" font-size="13" text-anchor="middle" font-family="Arial,sans-serif" letter-spacing="5">POSHTE NEGHAB • CLASSIFIED</text></svg>
