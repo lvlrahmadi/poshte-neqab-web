@@ -1,1 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect width="128" height="128" rx="28" fill="#171922"/><path d="M18 49Q64 12 110 49L99 91Q64 119 29 91Z" fill="#d7b36a"/><path d="M34 59Q64 39 94 59L87 79Q64 95 41 79Z" fill="#171922"/><circle cx="49" cy="65" r="5" fill="#f4f0e8"/><circle cx="79" cy="65" r="5" fill="#f4f0e8"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs>
+ <radialGradient id="bg" cx="50%" cy="34%" r="75%"><stop offset="0" stop-color="#32151b"/><stop offset="1" stop-color="#09090d"/></radialGradient>
+ <linearGradient id="blood" x1="0" y1="0" x2="0.2" y2="1"><stop offset="0" stop-color="#ff555e"/><stop offset=".48" stop-color="#d10d28"/><stop offset="1" stop-color="#710014"/></linearGradient>
+ <filter id="glow" x="-30%" y="-30%" width="160%" height="170%"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="512" height="512" rx="112" fill="url(#bg)"/>
+<rect x="19" y="19" width="474" height="474" rx="96" fill="none" stroke="#6d1b29" stroke-width="5"/>
+<path d="M256 65 C245 102 221 116 226 151 C230 177 251 187 256 209 C263 184 285 174 286 148 C287 119 267 99 256 65Z" fill="#9e0b22" opacity=".78"/>
+<text x="256" y="290" text-anchor="middle" direction="rtl" unicode-bidi="bidi-override" font-family="B Nazanin, Noto Naskh Arabic, Tahoma, serif" font-size="126" font-weight="900" letter-spacing="-7" fill="url(#blood)" stroke="#4d0010" stroke-width="4" paint-order="stroke" filter="url(#glow)">مافیا</text>
+<path d="M143 302 C139 327 148 342 141 365 C136 383 126 394 132 414 C143 407 150 391 151 374 C154 350 146 333 153 312Z
+M218 302 C215 326 222 341 216 361 C211 379 204 390 209 406 C220 399 225 382 226 365 C229 344 222 326 228 307Z
+M305 302 C302 329 311 344 305 366 C300 385 292 397 298 416 C309 407 314 390 315 370 C318 347 310 329 316 307Z
+M379 302 C375 326 384 341 378 362 C373 381 365 392 371 409 C382 402 388 385 389 366 C392 345 384 326 390 306Z" fill="url(#blood)" filter="url(#glow)"/>
+<circle cx="132" cy="423" r="7" fill="#b10b24"/><circle cx="209" cy="414" r="6" fill="#b10b24"/><circle cx="298" cy="424" r="7" fill="#b10b24"/><circle cx="371" cy="417" r="6" fill="#b10b24"/>
+<path d="M104 450 Q256 472 408 450" fill="none" stroke="#651321" stroke-width="5" stroke-linecap="round"/>
+</svg>
