@@ -43,7 +43,7 @@ function introScript(){
 function openIntroPage(){if(!game||game.phase!=='روز'||game.round!==1)return;$('introPage').classList.remove('hidden');$('introText').textContent=introScript();$('introPage').scrollTop=0;}
 function closeIntroPage(){$('introPage').classList.add('hidden');}
 function introCapoBox(){
- let el=$('introCapoPanel');if(!el){el=document.createElement('section');el.id='introCapoPanel';el.className='card';const host=$('dayTurns')?.parentElement;host?.insertBefore(el,$('dayTurns'));}return el;
+ let el=$('introCapoPanel');if(!el){el=document.createElement('section');el.id='introCapoPanel';el.className='card';const host=$('hostPanel');if(host?.parentElement)host.parentElement.insertBefore(el,host);}return el;
 }
 function renderIntroCapo(){
  if(!game||game.round!==1||!game.introCapo?.active||(game.phase!=='روز'&&game.introCapo.stage!=='mafia')){const el=$('introCapoPanel');if(el)el.classList.add('hidden');return;}
