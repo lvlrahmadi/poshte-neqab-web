@@ -38,7 +38,7 @@ function introScript(){
   for(const name of members){const p=game.players.find(x=>(x.converted?'عضو مافیای تبدیل‌شده':x.role)===name);const role=ROLES.find(r=>r.name===p.role);parts.push(name+'. '+(p.converted?'این بازیکن به گروه مافیا پیوسته است.':role?.desc||'قابلیت این نقش را گرداننده توضیح می‌دهد.'));}
  }
  parts.push('و اما قوانین بازی...','نقش هر بازیکن محرمانه است و نباید آن را به دیگران نشان دهد.','در روز، بازیکنان به ترتیب نوبت صحبت می‌کنند. زمان معمول هر نوبت، شصت ثانیه است؛ البته ممکن است توانایی روان‌شناس این زمان را کوتاه کند.','تصمیم‌ها و اقدام‌های شب را گرداننده ثبت و حل می‌کند. پزشک نمی‌تواند دو شب پیاپی یک نفر را نجات دهد.','توانایی‌هایی که یک بار در بازی قابل استفاده‌اند، پس از مصرف دوباره قابل استفاده نیستند.','به نوبت‌ها، قوانین میز و تصمیم گرداننده احترام بگذارید.','حالا بازی شروع می‌شود.','به پشت نقاب خوش آمدید.');
- return parts.join('\\n\\n');
+ return parts.join('\n\n');
 }
 function openIntroPage(){if(!game||game.phase!=='روز'||game.round!==1)return;$('introPage').classList.remove('hidden');$('introText').textContent=introScript();$('introPage').scrollTop=0;}
 function closeIntroPage(){$('introPage').classList.add('hidden');}
