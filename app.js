@@ -30,6 +30,18 @@ let game=null,activeReveal=false,undoStack=[];
 let speechTimer=null,speechRemaining=60,speechRunning=false,speechIndex=0,speechOrder=[];
 function stopSpeechTimer(){if(speechTimer){clearInterval(speechTimer);speechTimer=null;}speechRunning=false;}
 function speechDuration(p){return p&&p.status&&p.status.shortSpeechActive?30:60;}
+function advanceSpeakerTurn(reason){
+ if(!currentSpeaker())return;
+ stopSpeechTimer();
+ speechIndex++;
+ const next=currentSpeaker();
+ speechRemaining=next?speechDuration(next):0;
+ renderDayTurns();
+ if(next)startSpeakerTurn();
+ else $('nextSpeakerHint').textContent='نوبت صحبت همه بازیکنان تمام شده است.';
+ if(reason==='violation'&&next)$('nextSpeakerHint').textContent='به‌دلیل تخلف، نوبت قبلی گرفته شد؛ اکنون '+next.name+' صحبت می‌کند.';
+ else if(reason==='next'&&next)$('nextSpeakerHint').textContent='نوبت قبلی پایان یافت؛ اکنون '+next.name+' صحبت می‌کند.';
+}
 function initDayTurns(){stopSpeechTimer();speechOrder=alive().map(p=>p.id);speechIndex=0;speechRemaining=speechOrder.length?speechDuration(game.players.find(p=>p.id===speechOrder[0])):0;renderDayTurns();}
 function currentSpeaker(){return game&&game.players.find(p=>p.id===speechOrder[speechIndex]&&p.alive)||null;}
 function currentSpeakerAfter(){return speechOrder.slice(speechIndex+1).map(id=>game.players.find(p=>p.id===id&&p.alive)).find(Boolean)||null;}
@@ -56,6 +68,8 @@ function startSpeakerTurn(){
  speechTimer=setInterval(()=>{speechRemaining=Math.max(0,speechRemaining-1);if(speechRemaining===0){stopSpeechTimer();renderDayTurns();alert('وقت صحبت '+p.name+' تمام شد. نفر بعدی: '+(currentSpeakerAfter()?currentSpeakerAfter().name:'پایان نوبت‌ها')+'.');}else renderDayTurns();},1000);
 }
 $('startSpeaker').onclick=startSpeakerTurn;
+$('finishSpeaker').onclick=()=>advanceSpeakerTurn('next');
+$('takeSpeakerTurn').onclick=()=>{if(!confirm('نوبت صحبت بازیکن فعلی به‌دلیل تخلف گرفته شود و نفر بعدی شروع کند؟'))return;advanceSpeakerTurn('violation');};
 $('pauseSpeaker').onclick=()=>{stopSpeechTimer();renderDayTurns();};
 $('extendSpeaker').onclick=()=>{if(!currentSpeaker())return;speechRemaining+=15;renderDayTurns();};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
