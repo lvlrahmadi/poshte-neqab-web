@@ -27,6 +27,37 @@ const ROLES=[
 const ACTION_ROLE={protect_doctor:'پزشک',protect_guard:'محافظ',jam:'خاموش‌کننده',frame:'قاب‌ساز',investigate:'کارآگاه',interrogate:'بازپرس',track:'ردیاب',mafia_attack:'مافیا',serial_attack:'جانی',poison:'سم‌ساز',shot:'تک‌تیرانداز',psych:'روان‌شناس',judge:'قاضی',reporter:'خبرنگار',verify:'متخصص',deceive:'فریبکار',personal_bond:'محافظ شخصی'};
 const ONE_TIME=new Set(['interrogate','psych','judge','reporter','shot','verify','poison','jam','deceive','personal_bond']);
 let game=null,activeReveal=false,undoStack=[];
+let speechTimer=null,speechRemaining=60,speechRunning=false,speechIndex=0,speechOrder=[];
+function stopSpeechTimer(){if(speechTimer){clearInterval(speechTimer);speechTimer=null;}speechRunning=false;}
+function speechDuration(p){return p&&p.status&&p.status.shortSpeechActive?30:60;}
+function initDayTurns(){stopSpeechTimer();speechOrder=alive().map(p=>p.id);speechIndex=0;speechRemaining=speechOrder.length?speechDuration(game.players.find(p=>p.id===speechOrder[0])):0;renderDayTurns();}
+function currentSpeaker(){return game&&game.players.find(p=>p.id===speechOrder[speechIndex]&&p.alive)||null;}
+function currentSpeakerAfter(){return speechOrder.slice(speechIndex+1).map(id=>game.players.find(p=>p.id===id&&p.alive)).find(Boolean)||null;}
+function formatClock(n){n=Math.max(0,Math.ceil(n));return fa(String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0'));}
+function renderDayTurns(){
+ const box=$('dayTurns');if(!box||!game)return;
+ const isDay=game.phase==='روز';box.classList.toggle('hidden',!isDay);if(!isDay)return;
+ const p=currentSpeaker(),next=currentSpeakerAfter();
+ $('speakerName').textContent=p?p.name:'همه بازیکنان نوبت گرفته‌اند';
+ $('speakerPosition').textContent=p?('نفر '+fa(speechIndex+1)+' از '+fa(speechOrder.length)):'پایان نوبت‌های صحبت';
+ $('speechClock').textContent=formatClock(speechRemaining);
+ $('speechHint').textContent=p?(p.status.shortSpeechActive?'۳۰ ثانیه؛ زمان کوتاه‌شده توسط روان‌شناس':'۶۰ ثانیه زمان صحبت'):'';
+ $('nextSpeakerHint').textContent=speechRunning?'زمان صحبت در حال اجراست.':(speechRemaining===0&&p?('وقت '+p.name+' تمام شد. نفر بعدی: '+(next?next.name:'پایان نوبت‌ها')+'. برای آغاز نوبت بعدی دکمه را بزن.'):(p?'با فرمان گرداننده، زمان صحبت این بازیکن آغاز می‌شود.':'نوبت صحبت همه بازیکنان تمام شده است.'));
+ $('startSpeaker').textContent=speechRemaining===0&&p?'شروع نوبت نفر بعدی':'شروع نوبت صحبت';
+ $('startSpeaker').disabled=!p||speechRunning;
+ $('pauseSpeaker').disabled=!speechRunning;
+ $('extendSpeaker').disabled=!p;
+}
+function startSpeakerTurn(){
+ if(speechRunning)return;
+ if(speechRemaining===0){speechIndex++;const p=currentSpeaker();if(!p){renderDayTurns();return;}speechRemaining=speechDuration(p);}
+ const p=currentSpeaker();if(!p){renderDayTurns();return;}
+ speechRunning=true;renderDayTurns();
+ speechTimer=setInterval(()=>{speechRemaining=Math.max(0,speechRemaining-1);if(speechRemaining===0){stopSpeechTimer();renderDayTurns();alert('وقت صحبت '+p.name+' تمام شد. نفر بعدی: '+(currentSpeakerAfter()?currentSpeakerAfter().name:'پایان نوبت‌ها')+'.');}else renderDayTurns();},1000);
+}
+$('startSpeaker').onclick=startSpeakerTurn;
+$('pauseSpeaker').onclick=()=>{stopSpeechTimer();renderDayTurns();};
+$('extendSpeaker').onclick=()=>{if(!currentSpeaker())return;speechRemaining+=15;renderDayTurns();};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function checkpoint(){if(game){undoStack.push(JSON.stringify(game));if(undoStack.length>40)undoStack.shift();}}
 function fa(n){return String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);}
@@ -43,7 +74,7 @@ function isMafia(p){return Engine.isMafia(p);}
 function winner(){return Engine.checkWin(game);}
 function playerOptions(filter=()=>true,selected=''){return game.players.map(p=>`<option value="${esc(p.id)}" ${!p.alive||!filter(p)?'disabled':''} ${p.id===selected?'selected':''}>${esc(p.name)} — ${esc(p.role)}${p.alive?'':' (حذف‌شده)'}</option>`).join('');}
 function actorOptions(type){const role=ACTION_ROLE[type];return game.players.filter(p=>p.alive&&(type==='mafia_attack'?isMafia(p):p.role===role)).map(p=>`<option value="${esc(p.id)}">${esc(p.name)} — ${esc(p.role)}</option>`).join('');}
-function render(){if(!game)return;$('roundLabel').textContent=(game.phase==='شب'?'شب ':'روز ')+fa(game.round);$('phaseName').textContent=game.phase;$('phaseTag').textContent=game.phase;$('aliveCount').textContent=fa(alive().length);$('winStatus').textContent=winner()||'در جریان';$('nextPhase').textContent=game.phase==='شب'?'رفتن به روز و حل شب':'رفتن به شب بعد';$('playerList').innerHTML=game.players.map((p,i)=>`<div class="player ${p.alive?'':'dead'}"><span>${esc(p.name)} ${p.alive?'':'— حذف شده'}</span><button class="secondary" ${!p.alive?'disabled':''} onclick="showRole(${i})">دیدن نقش</button></div>`).join('');$('secretRoster').innerHTML=game.players.map(p=>`<div class="player"><span>${esc(p.name)}</span><span class="tag">${p.converted?'مافیا (تبدیل‌شده)':esc(p.role)} · ${p.alive?'زنده':'حذف‌شده'}${p.status.shortSpeechActive?' · صحبت محدود':''}</span></div>`).join('');$('eliminateTarget').innerHTML=playerOptions();$('independentWinner').innerHTML=game.players.map((p,i)=>`<option value="${i}" ${!p.alive||p.team!=='مستقل'?'disabled':''}>${esc(p.name)} — ${esc(p.role)}${p.alive?'':' (حذف‌شده)'}</option>`).join('');$('actionFields').innerHTML=actionFields();renderLog();save();}
+function render(){if(!game)return;$('roundLabel').textContent=(game.phase==='شب'?'شب ':'روز ')+fa(game.round);$('phaseName').textContent=game.phase;$('phaseTag').textContent=game.phase;$('aliveCount').textContent=fa(alive().length);$('winStatus').textContent=winner()||'در جریان';$('nextPhase').textContent=game.phase==='شب'?'رفتن به روز و حل شب':'رفتن به شب بعد';$('playerList').innerHTML=game.players.map((p,i)=>`<div class="player ${p.alive?'':'dead'}"><span>${esc(p.name)} ${p.alive?'':'— حذف شده'}</span><button class="secondary" ${!p.alive?'disabled':''} onclick="showRole(${i})">دیدن نقش</button></div>`).join('');$('secretRoster').innerHTML=game.players.map(p=>`<div class="player"><span>${esc(p.name)}</span><span class="tag">${p.converted?'مافیا (تبدیل‌شده)':esc(p.role)} · ${p.alive?'زنده':'حذف‌شده'}${p.status.shortSpeechActive?' · صحبت محدود':''}</span></div>`).join('');$('eliminateTarget').innerHTML=playerOptions();$('independentWinner').innerHTML=game.players.map((p,i)=>`<option value="${i}" ${!p.alive||p.team!=='مستقل'?'disabled':''}>${esc(p.name)} — ${esc(p.role)}${p.alive?'':' (حذف‌شده)'}</option>`).join('');$('actionFields').innerHTML=actionFields();renderLog();renderDayTurns();save();}
 window.showRole=i=>{if(activeReveal)return alert('اول نقش بازیکن قبلی را پنهان کن.');const p=game.players[i],r=roleOf(p);$('revealWho').textContent=p.name+'، نقش تو';$('revealRole').textContent=p.converted?'عضو مافیای تبدیل‌شده':p.role;$('revealTeam').textContent='تیم: '+(p.converted?'مافیا':p.team);$('revealDesc').textContent=p.converted?'تو به گروه مافیا پیوسته‌ای.':r.desc;$('reveal').classList.remove('hidden');$('playerList').classList.add('hidden');activeReveal=true;};
 $('hideRole').onclick=()=>{activeReveal=false;$('reveal').classList.add('hidden');$('playerList').classList.remove('hidden');};
 function selectField(id,label,filter=()=>true){return `<label>${label}</label><select id="${id}">${playerOptions(filter)}</select>`;}
@@ -88,7 +119,7 @@ $('undoAction').onclick=()=>{if(!undoStack.length)return alert('در این نش
 function eliminate(id,reason){const p=game.players.find(x=>x.id===id);if(!p||!p.alive)throw Error('بازیکن زنده انتخاب کن.');p.alive=false;if(isMafia(p))game.mafiaEliminated=(game.mafiaEliminated||0)+1;log(`${p.name} حذف شد؛ علت: ${reason}؛ نقش: ${p.role}`);}
 $('eliminateBtn').onclick=()=>{checkpoint();try{eliminate($('eliminateTarget').value,$('eliminateReason').value);render();}catch(e){game=JSON.parse(undoStack.pop());save();render();alert(e.message);}};
 function resolveNight(){const outcome=Engine.resolveNight(game.players,game.actions,game.round);for(const ev of outcome.events)log(ev);for(const d of outcome.deaths){const p=game.players.find(x=>x.id===d.id);if(p?.alive)eliminate(p.id,d.reason);}game.actions=game.actions.filter(a=>a.round!==game.round);log('حل شب تکمیل شد.');}
-$('nextPhase').onclick=()=>{if(winner())return alert('بازی پایان یافته است: '+winner());checkpoint();if(game.phase==='شب'){resolveNight();game.phase='روز';game.players.forEach(p=>{delete p.status.jammedRound;if(p.status.shortSpeechNextDay){p.status.shortSpeechActive=true;delete p.status.shortSpeechNextDay;}});}else{game.phase='شب';game.round++;game.players.forEach(p=>{delete p.status.deceiverMaskRound;delete p.status.deceiverMaskTeam;delete p.status.shortSpeechActive;});}
+$('nextPhase').onclick=()=>{if(winner())return alert('بازی پایان یافته است: '+winner());checkpoint();if(game.phase==='شب'){resolveNight();game.phase='روز';game.players.forEach(p=>{delete p.status.jammedRound;if(p.status.shortSpeechNextDay){p.status.shortSpeechActive=true;delete p.status.shortSpeechNextDay;}});initDayTurns();}else{stopSpeechTimer();game.phase='شب';game.round++;game.players.forEach(p=>{delete p.status.deceiverMaskRound;delete p.status.deceiverMaskTeam;delete p.status.shortSpeechActive;});}
  const opp=game.players.find(p=>p.alive&&p.role==='فرصت‌طلب');if(opp&&game.phase==='روز'&&game.round>=(game.rules.opportunistRound||5)&&game.mafiaEliminated>= (game.rules.opportunistMafiaEliminations||2)){log('شرط پیش‌فرض فرصت‌طلب محقق شده؛ گرداننده می‌تواند برد مستقل را تأیید کند.');}
  const personal=game.players.find(p=>p.alive&&p.role==='محافظ شخصی');if(personal?.status.clientId){const client=game.players.find(p=>p.id===personal.status.clientId);if(client?.alive&&game.phase==='روز'&&alive().length<=4)log('شرط بقا برای محافظ شخصی به مرحله پایانی رسیده؛ گرداننده شرط سناریو را بررسی کند.');}
  const w=winner();if(w)log('پایان بازی: '+w);render();};
@@ -97,6 +128,6 @@ $('hostButton').onclick=()=>{if(activeReveal)$('hideRole').click();$('hostPanel'
 $('exportSave').onclick=()=>{const blob=new Blob([JSON.stringify(game,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='poshte-neghab-backup-v5.json';a.click();URL.revokeObjectURL(a.href);};
 $('restoreBtn').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(![4,5].includes(data.version)||!Array.isArray(data.players))throw Error('فایل پشتیبان معتبر نیست.');data.version=5;data.actions=data.actions||[];data.logs=data.logs||[];data.independentWins=data.independentWins||[];data.players.forEach(p=>{p.used=p.used||{};p.status=p.status||{};});game=data;undoStack=[];$('setup').classList.add('hidden');$('game').classList.remove('hidden');render();alert('بازی با موفقیت بازیابی شد.');}catch(err){alert(err.message);}e.target.value='';};
 $('clearSaved').onclick=()=>{if(confirm('ذخیره بازی روی این دستگاه پاک شود؟')){localStorage.removeItem('poshteNeghabV5');localStorage.removeItem('poshteNeghabV4');alert('ذخیره پاک شد.');}};
-$('endGame').onclick=()=>{if(confirm('به صفحه ساخت بازی برگردیم؟')){undoStack=[];$('game').classList.add('hidden');$('setup').classList.remove('hidden');game=null;activeReveal=false;}};
+$('endGame').onclick=()=>{if(confirm('به صفحه ساخت بازی برگردیم؟')){stopSpeechTimer();undoStack=[];$('game').classList.add('hidden');$('setup').classList.remove('hidden');game=null;activeReveal=false;}};
 function renderLog(){$('eventLog').innerHTML=game.logs.slice(0,50).map(x=>`<div class="log">${new Date(x.at).toLocaleTimeString('fa-IR')} · ${esc(x.message)}</div>`).join('')||'<p class="hint">هنوز رویدادی ثبت نشده است.</p>';}
 try{const raw=localStorage.getItem('poshteNeghabV5')||localStorage.getItem('poshteNeghabV4');if(raw){const data=JSON.parse(raw);if([4,5].includes(data.version)&&Array.isArray(data.players)){data.version=5;data.actions=data.actions||[];data.logs=data.logs||[];data.independentWins=data.independentWins||[];data.players.forEach(p=>{p.used=p.used||{};p.status=p.status||{};});game=data;$('setup').classList.add('hidden');$('game').classList.remove('hidden');render();}}}catch(e){console.warn('بازی ذخیره‌شده قابل بازیابی نیست',e);}
