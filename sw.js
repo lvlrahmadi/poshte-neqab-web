@@ -1,4 +1,4 @@
-const CACHE='poshte-neghab-v15-js-parse-fix';
+const CACHE='poshte-neghab-v16-count-display';
 const FILES=['./','./index.html','./app.js','./engine.js','./manifest.webmanifest','./icon.svg?v=13','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting()));
