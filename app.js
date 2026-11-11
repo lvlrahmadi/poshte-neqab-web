@@ -46,7 +46,7 @@ function introCapoBox(){
  let el=$('introCapoPanel');if(!el){el=document.createElement('section');el.id='introCapoPanel';el.className='card';const host=$('dayTurns')?.parentElement;host?.insertBefore(el,$('dayTurns'));}return el;
 }
 function renderIntroCapo(){
- if(!game||game.phase!=='روز'||game.round!==1||!game.introCapo?.active){const el=$('introCapoPanel');if(el)el.classList.add('hidden');return;}
+ if(!game||game.round!==1||!game.introCapo?.active||(game.phase!=='روز'&&game.introCapo.stage!=='mafia')){const el=$('introCapoPanel');if(el)el.classList.add('hidden');return;}
  const c=game.introCapo,el=introCapoBox();el.classList.remove('hidden');
  const opts=game.players.filter(p=>p.alive).map(p=>'<option value="'+esc(p.id)+'">'+esc(p.name)+'</option>').join('');
  const names=ids=>(ids||[]).map(id=>game.players.find(p=>p.id===id)?.name||'—').join(' و ');
@@ -77,9 +77,9 @@ function renderIntroCapo(){
  if(c.stage==='done')html+='<p class="status">روز معارفه و تفنگ کاپو به پایان رسید. بازی آماده ورود به شب اول است.</p>';
  el.innerHTML=html;
  $('capoCountVotes')?.addEventListener('click',()=>{const votes={};el.querySelectorAll('[data-capo-voter]').forEach(x=>{if(x.value)votes[x.dataset.capoVoter]=x.value;});if(Object.keys(votes).length!==alive().length)return alert('رأی همه بازیکنان زنده را ثبت کن.');const tally={};Object.values(votes).forEach(id=>tally[id]=(tally[id]||0)+1);const max=Math.max(...Object.values(tally));const tied=Object.keys(tally).filter(id=>tally[id]===max);checkpoint();c.votes=votes;if(tied.length===1){c.gunHolder=tied[0];c.stage='suspects';}else{c.tiedPlayers=tied;c.stage='tie';}log('رأی‌گیری تیر کاپو ثبت شد.');render();});
- $('capoResolveTie')?.addEventListener('click',()=>{const choices=[...el.querySelectorAll('[data-capo-tie]')].map(x=>x.value).filter(Boolean);if(choices.length!==c.tiedPlayers.length)return alert('برای همه افراد مساوی گزینه انتخاب کن.');checkpoint();c.tieChoices=choices;c.gunHolder=choices[Math.floor(Math.random()*choices.length)];c.stage='suspects';log('قرعه‌کشی تساوی انجام شد؛ دارنده تفنگ: '+(game.players.find(p=>p.id===c.gunHolder)?.name||''));render();});
- $('capoSaveSuspects')?.addEventListener('click',()=>{const a=$('capoSuspect1').value,b=$('capoSuspect2').value;if(!a||!b||a===b)return alert('دو مظنون متفاوت انتخاب کن.');checkpoint();c.suspects=[a,b];c.stage='mafia';log('دو مظنون روز معارفه انتخاب شدند.');render();});
- $('capoChooseBullet')?.addEventListener('click',()=>{const v=Number($('capoLiveBullet').value);if(![1,2,3].includes(v))return alert('پدرخوانده باید یکی از سه تیر را انتخاب کند.');checkpoint();c.liveBullet=v;c.stage='defense';log('پدرخوانده تیر اصلی را انتخاب کرد.');render();});
+ $('capoResolveTie')?.addEventListener('click',()=>{const choices=[...el.querySelectorAll('[data-capo-tie]')].map(x=>x.value).filter(Boolean);if(choices.length!==c.tiedPlayers.length)return alert('برای همه افراد مساوی گزینه انتخاب کن.');checkpoint();c.tieChoices=choices;c.gunHolder=c.tiedPlayers[Math.floor(Math.random()*c.tiedPlayers.length)];c.stage='suspects';log('قرعه‌کشی تساوی انجام شد؛ دارنده تفنگ: '+(game.players.find(p=>p.id===c.gunHolder)?.name||''));render();});
+ $('capoSaveSuspects')?.addEventListener('click',()=>{const a=$('capoSuspect1').value,b=$('capoSuspect2').value;if(!a||!b||a===b)return alert('دو مظنون متفاوت انتخاب کن.');checkpoint();c.suspects=[a,b];c.stage='mafia';game.phase='شب';log('دو مظنون انتخاب شدند؛ شب معارفه برای انتخاب تیر اصلی آغاز شد.');render();});
+ $('capoChooseBullet')?.addEventListener('click',()=>{const v=Number($('capoLiveBullet').value);if(![1,2,3].includes(v))return alert('پدرخوانده باید یکی از سه تیر را انتخاب کند.');checkpoint();c.liveBullet=v;c.stage='defense';game.phase='روز';log('پدرخوانده تیر اصلی را انتخاب کرد؛ روز معارفه و دفاع آغاز شد.');render();});
  $('capoDefenseDone')?.addEventListener('click',()=>{checkpoint();c.stage='shoot';render();});
  $('capoFire')?.addEventListener('click',()=>{const id=$('capoShotTarget').value,p=game.players.find(x=>x.id===id);if(!p||!p.alive)return alert('هدف شلیک معتبر نیست.');checkpoint();eliminate(id,'تیر اصلی تفنگ کاپو در روز معارفه');c.shotTarget=id;c.blankFired=true;c.stage='done';c.completed=true;log('دارنده تفنگ کاپو تیر مشقی را به هوا شلیک کرد.');render();});
 }
@@ -106,7 +106,7 @@ function currentSpeakerAfter(){return speechOrder.slice(speechIndex+1).map(id=>g
 function formatClock(n){n=Math.max(0,Math.ceil(n));return fa(String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0'));}
 function renderDayTurns(){
  const box=$('dayTurns');if(!box||!game)return;
- const isDay=game.phase==='روز';box.classList.toggle('hidden',!isDay);if(!isDay)return;
+ const isDay=game.phase==='روز'&&!(game.round===1&&game.introCapo?.active&&game.introCapo.stage!=='speech');box.classList.toggle('hidden',!isDay);if(!isDay)return;
  const p=currentSpeaker(),next=currentSpeakerAfter();
  $('speakerName').textContent=p?p.name:'همه بازیکنان نوبت گرفته‌اند';
  $('speakerPosition').textContent=p?('نفر '+fa(speechIndex+1)+' از '+fa(speechOrder.length)):'پایان نوبت‌های صحبت';
