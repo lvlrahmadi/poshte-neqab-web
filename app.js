@@ -147,7 +147,7 @@ function checkpoint(){if(game){undoStack.push(JSON.stringify(game));if(undoStack
 function fa(n){return String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);}
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function alive(){return game.players.filter(p=>p.alive);}
-function log(message){game.logs.unshift({at:new Date().toISOString(),phase:game.phase,round:game.round,message});save();renderLog();}
+function log(message){game.logs.unshift({at:new Date().toISOString(),phase:game.phase,round:game.round,message});save();renderLog();renderGodDashboard();}
 function save(){if(game)localStorage.setItem('poshteNeghabV5',JSON.stringify(game));}
 function enteredNames(){return $('names').value.split(/[\r\n,،;；\t]+/).map(x=>x.trim().replace(/^\d+[.)、-]\s*/,'' )).filter(Boolean);}
 function updateComposition(){const n=enteredNames().length,c=TEAM_COUNTS[n];$('count').textContent=fa(n);$('composition').textContent=c?`برای ${fa(n)} نفر: ${fa(c[0])} شهروند، ${fa(c[1])} مافیا، ${fa(c[2])} مستقل`:n===0?'اسامی بازیکنان را وارد کن؛ تعداد به‌صورت خودکار محاسبه می‌شود.':`تعداد فعلی: ${fa(n)} نفر. برای ساخت بازی باید بین ۱۰ تا ۲۰ اسم وارد کنی.`;}
