@@ -169,12 +169,12 @@ function renderGodDashboard(){
  const speaker=game.phase==='روز'&&!(game.round===1&&game.introCapo?.active&&game.introCapo.stage!=='speech')?currentSpeaker():null;
  $('godDashSpeaker').textContent=speaker?speaker.name:'—';
  $('godAdvancePhase').textContent=introDay?'ادامه مراحل معارفه':'رفتن به '+(game.phase==='شب'?'روز و حل شب':'شب بعد');
- $('godAdvancePhase').disabled=!!(game.round===1&&game.introCapo?.active&&!game.introCapo.completed);
+ $('godAdvancePhase').disabled=false;
  $('godOpenCapo').disabled=!(game.round===1&&game.introCapo?.active&&!game.introCapo.completed);
  $('godOpenIntro').disabled=!(game.phase==='روز'&&game.round===1);
  $('godDashLatest').textContent=game.logs?.[0]?.message||'هنوز رویدادی ثبت نشده است.';
 }
-$('godAdvancePhase').onclick=()=>$('nextPhase').click();
+$('godAdvancePhase').onclick=()=>{const introDay=game?.phase==='روز'&&game.round===1&&game.introCapo?.active&&!game.introCapo?.completed;if(introDay){const target=game.introCapo.stage==='speech'?'dayTurns':'introCapoPanel';$(target)?.scrollIntoView({behavior:'smooth',block:'start'});return;}$('nextPhase').click();};
 $('godOpenTurns').onclick=()=>{$('hostPanel').classList.remove('hidden');$('dayTurns').scrollIntoView({behavior:'smooth',block:'start'});};
 $('godOpenActions').onclick=()=>{$('hostPanel').classList.remove('hidden');$('actionType').scrollIntoView({behavior:'smooth',block:'center'});};
 $('godOpenLog').onclick=()=>{$('hostPanel').classList.remove('hidden');$('eventLog').scrollIntoView({behavior:'smooth',block:'start'});};
