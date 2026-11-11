@@ -32,7 +32,37 @@ function allRolesViewed(){return !!game&&Array.isArray(game.viewedRoles)&&game.p
 function introScript(){const unique=[...new Set(game.players.map(p=>p.converted?'عضو مافیای تبدیل‌شده':p.role))];const groups=['شهروند','مافیا','مستقل'];let parts=['به بازی... پشت نقاب... خوش آمدید.','از این لحظه... هیچ‌چیز آن‌طور که به نظر می‌رسد نیست.','روز اول آغاز می‌شود.'];for(const team of groups){const members=unique.filter(name=>{const p=game.players.find(x=>(x.converted?'عضو مافیای تبدیل‌شده':x.role)===name);return p&&(p.converted?'مافیا':p.team)===team;});if(!members.length)continue;parts.push('نقش‌های تیم '+team+':');for(const name of members){const p=game.players.find(x=>(x.converted?'عضو مافیای تبدیل‌شده':x.role)===name);const role=ROLES.find(r=>r.name===p.role);parts.push(name+'. '+(p.converted?'این بازیکن به گروه مافیا پیوسته است.':role?.desc||'قابلیت این نقش را گرداننده توضیح می‌دهد.'));}}parts.push('و اما قوانین بازی...','نقش هر بازیکن محرمانه است و نباید آن را به دیگران نشان دهد.','در روز، بازیکنان به ترتیب نوبت صحبت می‌کنند. زمان معمول هر نوبت، شصت ثانیه است؛ البته ممکن است توانایی روان‌شناس این زمان را کوتاه کند.','تصمیم‌ها و اقدام‌های شب را گرداننده ثبت و حل می‌کند. پزشک نمی‌تواند دو شب پیاپی یک نفر را نجات دهد.','توانایی‌هایی که یک بار در بازی قابل استفاده‌اند، پس از مصرف دوباره قابل استفاده نیستند.','به نوبت‌ها، قوانین میز و تصمیم گرداننده احترام بگذارید.','حالا... بازی شروع می‌شود.','به پشت نقاب خوش آمدید.');return parts.join(' ');}
 function renderVoiceIntro(){const box=$('voiceIntro');if(!box||!game)return;const visible=game.phase==='روز'&&game.round===1;box.classList.toggle('hidden',!visible);if(!visible)return;const ready=allRolesViewed();$('voiceStatus').textContent=ready?(game.voiceIntroPlayed?'معرفی صوتی پخش شده است؛ می‌توانید دوباره گوش دهید.':'همه بازیکنان نقش خود را دیده‌اند. آماده پخش معرفی صوتی.'):'برای فعال شدن معرفی صوتی، همه بازیکنان باید نقش خود را ببینند و پنهان کنند.';$('voicePlay').disabled=!ready||voicePlaying;}
 function stopVoiceIntro(){if(voicePauseTimer)clearTimeout(voicePauseTimer);voicePauseTimer=null;if('speechSynthesis'in window)window.speechSynthesis.cancel();voiceQueue=[];voicePlaying=false;if($('voiceStatus'))$('voiceStatus').textContent='پخش صوتی متوقف شد.';if($('voicePlay'))$('voicePlay').disabled=!allRolesViewed();}
-function playVoiceIntro(){if(!game||game.phase!=='روز'||game.round!==1||!allRolesViewed())return;if(!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window)){alert('مرورگر یا دستگاه شما پخش گفتار را پشتیبانی نمی‌کند.');return;}if(voicePauseTimer)clearTimeout(voicePauseTimer);window.speechSynthesis.cancel();const text=introScript();voiceQueue=text.match(/[^.!؟]+[.!؟]+|[^.!؟]+$/g)?.map(s=>s.trim()).filter(Boolean)||[text];voicePlaying=true;game.voiceIntroPlayed=true;save();$('voiceStatus').textContent='گوینده اختصاصی پشت نقاب در حال اجراست…';$('voicePlay').disabled=true;const voices=window.speechSynthesis.getVoices();const faVoice=voices.find(v=>/^fa([-_]|$)/i.test(v.lang));const speakNext=()=>{if(!voicePlaying)return;if(!voiceQueue.length){voicePlaying=false;$('voiceStatus').textContent='معرفی صوتی به پایان رسید.';$('voicePlay').disabled=false;save();return;}const utterance=new SpeechSynthesisUtterance(voiceQueue.shift());utterance.lang='fa-IR';utterance.rate=0.91;utterance.pitch=0.78;utterance.volume=1;if(faVoice)utterance.voice=faVoice;utterance.onend=()=>{voicePauseTimer=setTimeout(speakNext,360);};utterance.onerror=()=>{if(!voicePlaying)return;voicePlaying=false;if(voicePauseTimer)clearTimeout(voicePauseTimer);$('voiceStatus').textContent='پخش صدا متوقف شد؛ دوباره تلاش کنید.';$('voicePlay').disabled=false;};window.speechSynthesis.speak(utterance);};speakNext();}
+function playVoiceIntro(){
+ if(!game||game.phase!=='روز'||game.round!==1||!allRolesViewed())return;
+ if(!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window)){alert('مرورگر یا دستگاه شما پخش گفتار را پشتیبانی نمی‌کند.');return;}
+ if(voicePauseTimer)clearTimeout(voicePauseTimer);
+ window.speechSynthesis.cancel();
+ voiceQueue=introScript().match(/[^.!؟]+[.!؟]+|[^.!؟]+$/g)?.map(s=>s.trim()).filter(Boolean)||[introScript()];
+ voicePlaying=true;game.voiceIntroPlayed=true;save();
+ $('voiceStatus').textContent='در حال آماده‌سازی صدای فارسی…';$('voicePlay').disabled=true;
+ const speakNext=()=>{
+  if(!voicePlaying)return;
+  if(!voiceQueue.length){voicePlaying=false;$('voiceStatus').textContent='معرفی صوتی به پایان رسید.';$('voicePlay').disabled=false;save();return;}
+  const voices=window.speechSynthesis.getVoices();
+  const faVoice=voices.find(v=>/^fa([-_]|$)/i.test(v.lang)||/persian|فارسی/i.test(v.name));
+  const utterance=new SpeechSynthesisUtterance(voiceQueue.shift());
+  utterance.lang=faVoice?faVoice.lang:'fa-IR';utterance.rate=0.91;utterance.pitch=0.88;utterance.volume=1;
+  if(faVoice)utterance.voice=faVoice;
+  utterance.onstart=()=>{$('voiceStatus').textContent='گوینده پشت نقاب در حال صحبت است…';};
+  utterance.onend=()=>{voicePauseTimer=setTimeout(speakNext,300);};
+  utterance.onerror=(event)=>{
+   if(!voicePlaying)return;
+   voicePlaying=false;voiceQueue=[];if(voicePauseTimer)clearTimeout(voicePauseTimer);voicePauseTimer=null;
+   const reason=event&&event.error?event.error:'نامشخص';
+   $('voiceStatus').textContent='صدای دستگاه اجرا نشد ('+reason+'). موتور تبدیل متن به گفتار فارسی گوشی را بررسی کنید و دوباره بزنید.';
+   $('voicePlay').disabled=false;
+  };
+  window.speechSynthesis.resume();
+  window.speechSynthesis.speak(utterance);
+ };
+ window.speechSynthesis.getVoices();
+ speakNext();
+}
 $('voicePlay').onclick=playVoiceIntro;$('voiceStop').onclick=stopVoiceIntro;
 let speechTimer=null,speechRemaining=60,speechRunning=false,speechIndex=0,speechOrder=[];
 function stopSpeechTimer(){if(speechTimer){clearInterval(speechTimer);speechTimer=null;}speechRunning=false;}
