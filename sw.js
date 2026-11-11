@@ -1,4 +1,4 @@
-const CACHE='poshte-neghab-v13-voice-pause-resume';
+const CACHE='poshte-neghab-v14-player-count-fix';
 const FILES=['./','./index.html','./app.js','./engine.js','./manifest.webmanifest','./icon.svg?v=13','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting()));
