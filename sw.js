@@ -1,5 +1,5 @@
-const CACHE='poshte-neghab-v8-mafia-icon';
-const FILES=['./','./index.html','./app.js','./engine.js','./manifest.webmanifest','./icon.svg?v=8','./icon-192.png','./icon-512.png'];
+const CACHE='poshte-neghab-v9-voice-intro';
+const FILES=['./','./index.html','./app.js','./engine.js','./manifest.webmanifest','./icon.svg?v=9','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting()));
 });
