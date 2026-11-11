@@ -42,6 +42,47 @@ function introScript(){
 }
 function openIntroPage(){if(!game||game.phase!=='روز'||game.round!==1)return;$('introPage').classList.remove('hidden');$('introText').textContent=introScript();$('introPage').scrollTop=0;}
 function closeIntroPage(){$('introPage').classList.add('hidden');}
+function introCapoBox(){
+ let el=$('introCapoPanel');if(!el){el=document.createElement('section');el.id='introCapoPanel';el.className='card';const host=$('dayTurns')?.parentElement;host?.insertBefore(el,$('dayTurns'));}return el;
+}
+function renderIntroCapo(){
+ if(!game||game.phase!=='روز'||game.round!==1||!game.introCapo?.active){const el=$('introCapoPanel');if(el)el.classList.add('hidden');return;}
+ const c=game.introCapo,el=introCapoBox();el.classList.remove('hidden');
+ const opts=game.players.filter(p=>p.alive).map(p=>'<option value="'+esc(p.id)+'">'+esc(p.name)+'</option>').join('');
+ const names=ids=>(ids||[]).map(id=>game.players.find(p=>p.id===id)?.name||'—').join(' و ');
+ let html='<h2>روز معارفه و تفنگ کاپو</h2><p class="hint">این مرحله بدون چالش برگزار می‌شود.</p>';
+ if(c.stage==='speech'){html+='<p>همه بازیکنان به‌ترتیب یک نوبت صحبت می‌کنند. پس از پایان آخرین نوبت، رأی‌گیری آغاز می‌شود.</p>';}
+ if(c.stage==='vote'){
+ html+='<h3>ثبت رأی تیر کاپو</h3><p class="hint">گرداننده رأی هر بازیکن زنده را ثبت کند.</p>';
+ html+=game.players.filter(p=>p.alive).map(p=>'<label>رأی '+esc(p.name)+'</label><select data-capo-voter="'+p.id+'"><option value="">انتخاب شهروند احتمالی</option>'+opts+'</select>').join('');
+ html+='<button id="capoCountVotes">محاسبه آرا</button>';
+ }
+ if(c.stage==='tie'){
+ html+='<h3>تساوی در رأی‌گیری</h3><p>افراد مساوی: '+names(c.tiedPlayers)+'</p><p class="hint">برای هر نفر مساوی یک گزینه تصادفی انتخاب شود؛ سپس تفنگ به‌صورت تصادفی به یکی از انتخاب‌کنندگان می‌رسد.</p>';
+ html+=(c.tiedPlayers||[]).map((id,i)=>'<label>انتخاب تصادفی '+(i+1)+'</label><select data-capo-tie="'+id+'"><option value="">انتخاب گزینه</option>'+opts+'</select>').join('');
+ html+='<button id="capoResolveTie">قرعه‌کشی دارنده تفنگ</button>';
+ }
+ if(c.stage==='suspects'){
+ html+='<h3>انتخاب دو مظنون</h3><p>دارنده تفنگ: <strong>'+esc(game.players.find(p=>p.id===c.gunHolder)?.name||'—')+'</strong></p><label>مظنون اول</label><select id="capoSuspect1">'+opts+'</select><label>مظنون دوم</label><select id="capoSuspect2">'+opts+'</select><button id="capoSaveSuspects">تأیید دو مظنون و رفتن به شب مافیا</button>';
+ }
+ if(c.stage==='mafia'){
+ html+='<h3>شب معارفه — انتخاب تیر اصلی</h3><p>گرداننده تیم مافیا را بیدار کند. پدرخوانده یکی از سه تیر را به‌عنوان تیر اصلی انتخاب می‌کند.</p><label>تیر اصلی</label><select id="capoLiveBullet"><option value="">انتخاب تیر</option><option value="1">تیر شماره ۱</option><option value="2">تیر شماره ۲</option><option value="3">تیر شماره ۳</option></select><button id="capoChooseBullet">ثبت انتخاب پدرخوانده و بازگشت به روز معارفه</button>';
+ }
+ if(c.stage==='defense'){
+ html+='<h3>دفاع دو مظنون</h3><p>نفر اول: <strong>'+esc(game.players.find(p=>p.id===c.suspects[0])?.name||'—')+'</strong></p><p>نفر دوم: <strong>'+esc(game.players.find(p=>p.id===c.suspects[1])?.name||'—')+'</strong></p><p>گرداننده پس از دفاع هر دو نفر، ادامه را بزند.</p><button id="capoDefenseDone">پایان دفاع‌ها</button>';
+ }
+ if(c.stage==='shoot'){
+ html+='<h3>تصمیم دارنده تفنگ</h3><p>تیر شماره '+fa(c.liveBullet)+' تیر اصلی است؛ دو تیر دیگر مشقی‌اند.</p><label>هدف تیر اصلی</label><select id="capoShotTarget">'+(c.suspects||[]).map(id=>{const p=game.players.find(x=>x.id===id);return p&&p.alive?'<option value="'+id+'">'+esc(p.name)+'</option>':''}).join('')+'</select><p class="hint">تیر مشقی به هوا شلیک می‌شود.</p><button class="danger" id="capoFire">تأیید شلیک و پایان روز معارفه</button>';
+ }
+ if(c.stage==='done')html+='<p class="status">روز معارفه و تفنگ کاپو به پایان رسید. بازی آماده ورود به شب اول است.</p>';
+ el.innerHTML=html;
+ $('capoCountVotes')?.addEventListener('click',()=>{const votes={};el.querySelectorAll('[data-capo-voter]').forEach(x=>{if(x.value)votes[x.dataset.capoVoter]=x.value;});if(Object.keys(votes).length!==alive().length)return alert('رأی همه بازیکنان زنده را ثبت کن.');const tally={};Object.values(votes).forEach(id=>tally[id]=(tally[id]||0)+1);const max=Math.max(...Object.values(tally));const tied=Object.keys(tally).filter(id=>tally[id]===max);checkpoint();c.votes=votes;if(tied.length===1){c.gunHolder=tied[0];c.stage='suspects';}else{c.tiedPlayers=tied;c.stage='tie';}log('رأی‌گیری تیر کاپو ثبت شد.');render();});
+ $('capoResolveTie')?.addEventListener('click',()=>{const choices=[...el.querySelectorAll('[data-capo-tie]')].map(x=>x.value).filter(Boolean);if(choices.length!==c.tiedPlayers.length)return alert('برای همه افراد مساوی گزینه انتخاب کن.');checkpoint();c.tieChoices=choices;c.gunHolder=choices[Math.floor(Math.random()*choices.length)];c.stage='suspects';log('قرعه‌کشی تساوی انجام شد؛ دارنده تفنگ: '+(game.players.find(p=>p.id===c.gunHolder)?.name||''));render();});
+ $('capoSaveSuspects')?.addEventListener('click',()=>{const a=$('capoSuspect1').value,b=$('capoSuspect2').value;if(!a||!b||a===b)return alert('دو مظنون متفاوت انتخاب کن.');checkpoint();c.suspects=[a,b];c.stage='mafia';log('دو مظنون روز معارفه انتخاب شدند.');render();});
+ $('capoChooseBullet')?.addEventListener('click',()=>{const v=Number($('capoLiveBullet').value);if(![1,2,3].includes(v))return alert('پدرخوانده باید یکی از سه تیر را انتخاب کند.');checkpoint();c.liveBullet=v;c.stage='defense';log('پدرخوانده تیر اصلی را انتخاب کرد.');render();});
+ $('capoDefenseDone')?.addEventListener('click',()=>{checkpoint();c.stage='shoot';render();});
+ $('capoFire')?.addEventListener('click',()=>{const id=$('capoShotTarget').value,p=game.players.find(x=>x.id===id);if(!p||!p.alive)return alert('هدف شلیک معتبر نیست.');checkpoint();eliminate(id,'تیر اصلی تفنگ کاپو در روز معارفه');c.shotTarget=id;c.blankFired=true;c.stage='done';c.completed=true;log('دارنده تفنگ کاپو تیر مشقی را به هوا شلیک کرد.');render();});
+}
 function renderVoiceIntro(){const visible=!!game&&game.phase==='روز'&&game.round===1;$('openIntroPage').classList.toggle('hidden',!visible);if(visible)$('introText').textContent=introScript();}
 $('openIntroPage').onclick=openIntroPage;$('closeIntroPage').onclick=closeIntroPage;
 let speechTimer=null,speechRemaining=60,speechRunning=false,speechIndex=0,speechOrder=[];
@@ -55,11 +96,11 @@ function advanceSpeakerTurn(reason){
  speechRemaining=next?speechDuration(next):0;
  renderDayTurns();
  if(next)startSpeakerTurn();
- else $('nextSpeakerHint').textContent='نوبت صحبت همه بازیکنان تمام شده است.';
+ else { $('nextSpeakerHint').textContent='نوبت صحبت همه بازیکنان تمام شده است.'; if(game.round===1&&game.introCapo?.active&&game.introCapo.stage==='speech'){game.introCapo.stage='vote';log('صحبت‌های روز معارفه تمام شد؛ رأی‌گیری تیر کاپو آغاز می‌شود.');renderIntroCapo();} }
  if(reason==='violation'&&next)$('nextSpeakerHint').textContent='به‌دلیل تخلف، نوبت قبلی گرفته شد؛ اکنون '+next.name+' صحبت می‌کند.';
  else if(reason==='next'&&next)$('nextSpeakerHint').textContent='نوبت قبلی پایان یافت؛ اکنون '+next.name+' صحبت می‌کند.';
 }
-function initDayTurns(){stopSpeechTimer();speechOrder=alive().map(p=>p.id);speechIndex=0;speechRemaining=speechOrder.length?speechDuration(game.players.find(p=>p.id===speechOrder[0])):0;renderDayTurns();}
+function initDayTurns(){stopSpeechTimer();speechOrder=alive().map(p=>p.id);speechIndex=0;speechRemaining=speechOrder.length?speechDuration(game.players.find(p=>p.id===speechOrder[0])):0;if(game.round===1&&game.introCapo?.active&&game.introCapo.stage==='speech'){}renderDayTurns();}
 function currentSpeaker(){return game&&game.players.find(p=>p.id===speechOrder[speechIndex]&&p.alive)||null;}
 function currentSpeakerAfter(){return speechOrder.slice(speechIndex+1).map(id=>game.players.find(p=>p.id===id&&p.alive)).find(Boolean)||null;}
 function formatClock(n){n=Math.max(0,Math.ceil(n));return fa(String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0'));}
@@ -78,6 +119,7 @@ function renderDayTurns(){
  $('extendSpeaker').disabled=!p;
 }
 function startSpeakerTurn(){
+ if(game?.round===1&&game.introCapo?.active&&game.introCapo.stage!=='speech')return;
  if(speechRunning)return;
  if(speechRemaining===0){speechIndex++;const p=currentSpeaker();if(!p){renderDayTurns();return;}speechRemaining=speechDuration(p);}
  const p=currentSpeaker();if(!p){renderDayTurns();return;}
@@ -100,13 +142,13 @@ function enteredNames(){return $('names').value.split(/[\r\n,،;；\t]+/).map(x=
 function updateComposition(){const n=enteredNames().length,c=TEAM_COUNTS[n];$('count').textContent=fa(n);$('composition').textContent=c?`برای ${fa(n)} نفر: ${fa(c[0])} شهروند، ${fa(c[1])} مافیا، ${fa(c[2])} مستقل`:n===0?'اسامی بازیکنان را وارد کن؛ تعداد به‌صورت خودکار محاسبه می‌شود.':`تعداد فعلی: ${fa(n)} نفر. برای ساخت بازی باید بین ۱۰ تا ۲۰ اسم وارد کنی.`;}
 $('names').addEventListener('input',updateComposition);updateComposition();
 function makeDeck(n){const [c,m,s]=TEAM_COUNTS[n],groups=[ROLES.filter(r=>r.team==='شهروند'),ROLES.filter(r=>r.team==='مافیا'),ROLES.filter(r=>r.team==='مستقل')],counts=[c,m,s],deck=[];groups.forEach((bank,g)=>{const picked=shuffle(bank);for(let i=0;i<counts[g];i++)deck.push(picked[i%picked.length]);});return shuffle(deck);}
-$('makeGame').onclick=()=>{const names=enteredNames(),n=names.length;$('count').textContent=fa(n);if(!TEAM_COUNTS[n])return alert(`برای ساخت بازی باید بین ۱۰ تا ۲۰ نام وارد کنی. تعداد فعلی: ${fa(n)} نفر.`);if(new Set(names).size!==n)return alert('نام تکراری وجود دارد؛ لطفاً اسم‌های تکراری را اصلاح کن.');if(game&&!confirm('بازی جدید ساخته شود؟ ذخیره بازی قبلی جایگزین می‌شود.'))return;const deck=makeDeck(n);game={version:5,players:names.map((name,i)=>({id:`p${i+1}`,name,role:deck[i].name,team:deck[i].team,alive:true,converted:false,used:{},status:{}})),viewedRoles:[],voiceIntroPlayed:false,phase:'شب',round:1,logs:[],actions:[],independentWins:[],rules:{deceiverRound:6,deceiverAliveLimit:4,opportunistRound:5,opportunistMafiaEliminations:2},createdAt:new Date().toISOString()};undoStack=[];log('بازی جدید ساخته شد؛ نقش‌ها به‌صورت تصادفی پخش شدند.');$('setup').classList.add('hidden');$('game').classList.remove('hidden');render();};
+$('makeGame').onclick=()=>{const names=enteredNames(),n=names.length;$('count').textContent=fa(n);if(!TEAM_COUNTS[n])return alert(`برای ساخت بازی باید بین ۱۰ تا ۲۰ نام وارد کنی. تعداد فعلی: ${fa(n)} نفر.`);if(new Set(names).size!==n)return alert('نام تکراری وجود دارد؛ لطفاً اسم‌های تکراری را اصلاح کن.');if(game&&!confirm('بازی جدید ساخته شود؟ ذخیره بازی قبلی جایگزین می‌شود.'))return;const deck=makeDeck(n);game={version:5,players:names.map((name,i)=>({id:`p${i+1}`,name,role:deck[i].name,team:deck[i].team,alive:true,converted:false,used:{},status:{}})),viewedRoles:[],voiceIntroPlayed:false,introCapo:{active:false,stage:'speech',votes:{},tieChoices:{},gunHolder:null,suspects:[],liveBullet:null},phase:'شب',round:1,logs:[],actions:[],independentWins:[],rules:{deceiverRound:6,deceiverAliveLimit:4,opportunistRound:5,opportunistMafiaEliminations:2},createdAt:new Date().toISOString()};undoStack=[];log('بازی جدید ساخته شد؛ نقش‌ها به‌صورت تصادفی پخش شدند.');$('setup').classList.add('hidden');$('game').classList.remove('hidden');render();};
 function roleOf(p){return ROLES.find(r=>r.name===p.role)||{desc:'نقش ثبت‌شده در نسخه قبلی.'};}
 function isMafia(p){return Engine.isMafia(p);}
 function winner(){return Engine.checkWin(game);}
 function playerOptions(filter=()=>true,selected=''){return game.players.map(p=>`<option value="${esc(p.id)}" ${!p.alive||!filter(p)?'disabled':''} ${p.id===selected?'selected':''}>${esc(p.name)} — ${esc(p.role)}${p.alive?'':' (حذف‌شده)'}</option>`).join('');}
 function actorOptions(type){const role=ACTION_ROLE[type];return game.players.filter(p=>p.alive&&(type==='mafia_attack'?isMafia(p):p.role===role)).map(p=>`<option value="${esc(p.id)}">${esc(p.name)} — ${esc(p.role)}</option>`).join('');}
-function render(){if(!game)return;$('roundLabel').textContent=(game.phase==='شب'?'شب ':'روز ')+fa(game.round);$('phaseName').textContent=game.phase;$('phaseTag').textContent=game.phase;$('aliveCount').textContent=fa(alive().length);$('winStatus').textContent=winner()||'در جریان';$('nextPhase').textContent=game.phase==='شب'?'رفتن به روز و حل شب':'رفتن به شب بعد';$('playerList').innerHTML=game.players.map((p,i)=>`<div class="player ${p.alive?'':'dead'}"><span>${esc(p.name)} ${p.alive?'':'— حذف شده'}</span><button class="secondary" ${!p.alive?'disabled':''} onclick="showRole(${i})">دیدن نقش</button></div>`).join('');$('secretRoster').innerHTML=game.players.map(p=>`<details class="role-dropdown"><summary><strong>${esc(p.name)}</strong><span class="tag">${p.alive?'زنده':'حذف‌شده'}</span></summary><div class="role-dropdown-content"><strong>${p.converted?'عضو مافیای تبدیل‌شده':esc(p.role)}</strong><span class="tag">تیم: ${p.converted?'مافیا':esc(p.team)}</span>${p.status.shortSpeechActive?'<span class="tag">صحبت محدود</span>':''}<p class="hint">${esc(p.converted?'تو به گروه مافیا پیوسته‌ای.':roleOf(p).desc)}</p></div></details>`).join('');$('eliminateTarget').innerHTML=playerOptions();$('independentWinner').innerHTML=game.players.map((p,i)=>`<option value="${i}" ${!p.alive||p.team!=='مستقل'?'disabled':''}>${esc(p.name)} — ${esc(p.role)}${p.alive?'':' (حذف‌شده)'}</option>`).join('');$('actionFields').innerHTML=actionFields();renderLog();renderDayTurns();renderVoiceIntro();save();}
+function render(){if(!game)return;$('roundLabel').textContent=(game.phase==='شب'?'شب ':'روز ')+fa(game.round);$('phaseName').textContent=game.phase;$('phaseTag').textContent=game.phase;$('aliveCount').textContent=fa(alive().length);$('winStatus').textContent=winner()||'در جریان';$('nextPhase').textContent=game.phase==='شب'?'رفتن به روز و حل شب':'رفتن به شب بعد';$('playerList').innerHTML=game.players.map((p,i)=>`<div class="player ${p.alive?'':'dead'}"><span>${esc(p.name)} ${p.alive?'':'— حذف شده'}</span><button class="secondary" ${!p.alive?'disabled':''} onclick="showRole(${i})">دیدن نقش</button></div>`).join('');$('secretRoster').innerHTML=game.players.map(p=>`<details class="role-dropdown"><summary><strong>${esc(p.name)}</strong><span class="tag">${p.alive?'زنده':'حذف‌شده'}</span></summary><div class="role-dropdown-content"><strong>${p.converted?'عضو مافیای تبدیل‌شده':esc(p.role)}</strong><span class="tag">تیم: ${p.converted?'مافیا':esc(p.team)}</span>${p.status.shortSpeechActive?'<span class="tag">صحبت محدود</span>':''}<p class="hint">${esc(p.converted?'تو به گروه مافیا پیوسته‌ای.':roleOf(p).desc)}</p></div></details>`).join('');$('eliminateTarget').innerHTML=playerOptions();$('independentWinner').innerHTML=game.players.map((p,i)=>`<option value="${i}" ${!p.alive||p.team!=='مستقل'?'disabled':''}>${esc(p.name)} — ${esc(p.role)}${p.alive?'':' (حذف‌شده)'}</option>`).join('');$('actionFields').innerHTML=actionFields();renderLog();renderDayTurns();renderVoiceIntro();renderIntroCapo();save();}
 window.showRole=i=>{if(activeReveal)return alert('اول نقش بازیکن قبلی را پنهان کن.');const p=game.players[i],r=roleOf(p);$('revealWho').textContent=p.name+'، نقش تو';$('revealRole').textContent=p.converted?'عضو مافیای تبدیل‌شده':p.role;$('revealTeam').textContent='تیم: '+(p.converted?'مافیا':p.team);$('revealDesc').textContent=p.converted?'تو به گروه مافیا پیوسته‌ای.':r.desc;$('reveal').classList.remove('hidden');$('playerList').classList.add('hidden');activeReveal=true;};
 $('hideRole').onclick=()=>{const i=game.players.findIndex(p=>p.name===$('revealWho').textContent.replace(/، نقش تو$/,''));if(i>=0){game.viewedRoles=Array.isArray(game.viewedRoles)?game.viewedRoles:[];if(!game.viewedRoles.includes(game.players[i].id))game.viewedRoles.push(game.players[i].id);}activeReveal=false;$('reveal').classList.add('hidden');$('playerList').classList.remove('hidden');save();renderVoiceIntro();};
 function selectField(id,label,filter=()=>true){return `<label>${label}</label><select id="${id}">${playerOptions(filter)}</select>`;}
@@ -151,7 +193,7 @@ $('undoAction').onclick=()=>{if(!undoStack.length)return alert('در این نش
 function eliminate(id,reason){const p=game.players.find(x=>x.id===id);if(!p||!p.alive)throw Error('بازیکن زنده انتخاب کن.');p.alive=false;if(isMafia(p))game.mafiaEliminated=(game.mafiaEliminated||0)+1;log(`${p.name} حذف شد؛ علت: ${reason}؛ نقش: ${p.role}`);}
 $('eliminateBtn').onclick=()=>{checkpoint();try{eliminate($('eliminateTarget').value,$('eliminateReason').value);render();}catch(e){game=JSON.parse(undoStack.pop());save();render();alert(e.message);}};
 function resolveNight(){const outcome=Engine.resolveNight(game.players,game.actions,game.round);for(const ev of outcome.events)log(ev);for(const d of outcome.deaths){const p=game.players.find(x=>x.id===d.id);if(p?.alive)eliminate(p.id,d.reason);}game.actions=game.actions.filter(a=>a.round!==game.round);log('حل شب تکمیل شد.');}
-$('nextPhase').onclick=()=>{if(winner())return alert('بازی پایان یافته است: '+winner());checkpoint();if(game.phase==='شب'){resolveNight();game.phase='روز';game.players.forEach(p=>{delete p.status.jammedRound;if(p.status.shortSpeechNextDay){p.status.shortSpeechActive=true;delete p.status.shortSpeechNextDay;}});initDayTurns();}else{stopSpeechTimer();game.phase='شب';game.round++;game.players.forEach(p=>{delete p.status.deceiverMaskRound;delete p.status.deceiverMaskTeam;delete p.status.shortSpeechActive;});}
+$('nextPhase').onclick=()=>{if(winner())return alert('بازی پایان یافته است: '+winner());checkpoint();if(game.phase==='شب'){resolveNight();game.phase='روز';if(game.round===1&&game.introCapo&&!game.introCapo.completed){game.introCapo.active=true;game.introCapo.stage='speech';}game.players.forEach(p=>{delete p.status.jammedRound;if(p.status.shortSpeechNextDay){p.status.shortSpeechActive=true;delete p.status.shortSpeechNextDay;}});initDayTurns();}else{if(game.round===1&&game.introCapo?.active&&!game.introCapo.completed)return alert('مراحل روز معارفه و تفنگ کاپو هنوز کامل نشده است.');stopSpeechTimer();game.phase='شب';game.round++;game.players.forEach(p=>{delete p.status.deceiverMaskRound;delete p.status.deceiverMaskTeam;delete p.status.shortSpeechActive;});}
  const opp=game.players.find(p=>p.alive&&p.role==='فرصت‌طلب');if(opp&&game.phase==='روز'&&game.round>=(game.rules.opportunistRound||5)&&game.mafiaEliminated>= (game.rules.opportunistMafiaEliminations||2)){log('شرط پیش‌فرض فرصت‌طلب محقق شده؛ گرداننده می‌تواند برد مستقل را تأیید کند.');}
  const personal=game.players.find(p=>p.alive&&p.role==='محافظ شخصی');if(personal?.status.clientId){const client=game.players.find(p=>p.id===personal.status.clientId);if(client?.alive&&game.phase==='روز'&&alive().length<=4)log('شرط بقا برای محافظ شخصی به مرحله پایانی رسیده؛ گرداننده شرط سناریو را بررسی کند.');}
  const w=winner();if(w)log('پایان بازی: '+w);render();if(game.phase==='روز'&&game.round===1)openIntroPage();};
