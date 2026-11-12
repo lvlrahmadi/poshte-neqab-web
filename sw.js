@@ -1,4 +1,4 @@
-const CACHE='poshte-neghab-v72-visible-backgrounds-welcome-title';
+const CACHE='poshte-neghab-v73-force-refresh-red-frames';
 const FILES=['./','./index.html','./app.js','./engine.js','./fonts-loader.js','./fonts/arad-vf.woff2.b64','./fonts/ARAD-OFL.txt','./manifest.webmanifest','./icon.svg?v=13','./assets/mafia-god-welcome.svg','./icon-192.png','./icon-512.png','./assets/roles/detective.svg','./assets/roles/doctor.svg','./assets/roles/guard.svg','./assets/roles/interrogator.svg','./assets/roles/tracker.svg','./assets/roles/psychologist.svg','./assets/roles/judge.svg','./assets/roles/reporter.svg','./assets/roles/sniper.svg','./assets/roles/specialist.svg','./assets/roles/godfather.svg','./assets/roles/framer.svg','./assets/roles/poisoner.svg','./assets/roles/silencer.svg','./assets/roles/infiltrator.svg','./assets/roles/underboss.svg'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting()));
