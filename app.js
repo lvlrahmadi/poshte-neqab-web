@@ -126,19 +126,33 @@ $('openIntroPage').onclick=openIntroPage;$('closeIntroPage').onclick=closeIntroP
 let speechTimer=null,speechRemaining=60,speechRunning=false,speechIndex=0,speechOrder=[];
 function stopSpeechTimer(){if(speechTimer){clearInterval(speechTimer);speechTimer=null;}speechRunning=false;}
 function speechDuration(p){return p&&p.status&&p.status.shortSpeechActive?30:60;}
+// تنها مسیر پایان صحبت‌های روز معارفه؛ render کامل، پنل رأی‌گیری را هم از حالت مخفی خارج می‌کند.
+function completeIntroSpeeches(){
+ if(!game||game.round!==1||!game.introCapo?.active||game.introCapo.stage!=='speech')return false;
+ stopSpeechTimer();
+ game.introCapo.stage='vote';
+ log('صحبت‌های روز معارفه تمام شد؛ رأی‌گیری تیر کاپو آغاز می‌شود.');
+ render();
+ return true;
+}
 function advanceSpeakerTurn(reason){
- if(!currentSpeaker())return;
+ if(!currentSpeaker()){completeIntroSpeeches();return;}
  stopSpeechTimer();
  speechIndex++;
  const next=currentSpeaker();
  speechRemaining=next?speechDuration(next):0;
- renderDayTurns();
+ if(next)renderDayTurns();
+ else if(!completeIntroSpeeches())renderDayTurns();
  if(next)startSpeakerTurn();
- else { $('nextSpeakerHint').textContent='نوبت صحبت همه بازیکنان تمام شده است.'; if(game.round===1&&game.introCapo?.active&&game.introCapo.stage==='speech'){game.introCapo.stage='vote';log('صحبت‌های روز معارفه تمام شد؛ رأی‌گیری تیر کاپو آغاز می‌شود.');renderDayTurns();renderIntroCapo();} }
  if(reason==='violation'&&next)$('nextSpeakerHint').textContent='به‌دلیل تخلف، نوبت قبلی گرفته شد؛ اکنون '+next.name+' صحبت می‌کند.';
  else if(reason==='next'&&next)$('nextSpeakerHint').textContent='نوبت قبلی پایان یافت؛ اکنون '+next.name+' صحبت می‌کند.';
 }
-function initDayTurns(){stopSpeechTimer();speechOrder=alive().map(p=>p.id);speechIndex=0;speechRemaining=speechOrder.length?speechDuration(game.players.find(p=>p.id===speechOrder[0])):0;if(game.round===1&&game.introCapo?.active&&game.introCapo.stage==='speech'){}renderDayTurns();}
+function initDayTurns(){
+ stopSpeechTimer();speechOrder=alive().map(p=>p.id);speechIndex=0;
+ speechRemaining=speechOrder.length?speechDuration(game.players.find(p=>p.id===speechOrder[0])):0;
+ if(!speechOrder.length)completeIntroSpeeches();
+ renderDayTurns();
+}
 function currentSpeaker(){return game&&game.players.find(p=>p.id===speechOrder[speechIndex]&&p.alive)||null;}
 function currentSpeakerAfter(){return speechOrder.slice(speechIndex+1).map(id=>game.players.find(p=>p.id===id&&p.alive)).find(Boolean)||null;}
 function formatClock(n){n=Math.max(0,Math.ceil(n));return fa(String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0'));}
@@ -163,24 +177,14 @@ function startSpeakerTurn(){
   speechIndex++;
   const next=currentSpeaker();
   if(!next){
-   if(game?.round===1&&game.introCapo?.active&&game.introCapo.stage==='speech'){
-    game.introCapo.stage='vote';
-    log('صحبت‌های روز معارفه تمام شد؛ رأی‌گیری تیر کاپو آغاز می‌شود.');
-    renderDayTurns();
-    renderIntroCapo();
-   }else renderDayTurns();
+   if(!completeIntroSpeeches())renderDayTurns();
    return;
   }
   speechRemaining=speechDuration(next);
  }
  const p=currentSpeaker();
  if(!p){
-  if(game?.round===1&&game.introCapo?.active&&game.introCapo.stage==='speech'){
-   game.introCapo.stage='vote';
-   log('صحبت‌های روز معارفه تمام شد؛ رأی‌گیری تیر کاپو آغاز می‌شود.');
-   renderDayTurns();
-   renderIntroCapo();
-  }else renderDayTurns();
+  if(!completeIntroSpeeches())renderDayTurns();
   return;
  }
  speechRunning=true;renderDayTurns();
