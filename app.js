@@ -146,8 +146,30 @@ function renderDayTurns(){
 function startSpeakerTurn(){
  if(game?.round===1&&game.introCapo?.active&&game.introCapo.stage!=='speech')return;
  if(speechRunning)return;
- if(speechRemaining===0){speechIndex++;const p=currentSpeaker();if(!p){renderDayTurns();return;}speechRemaining=speechDuration(p);}
- const p=currentSpeaker();if(!p){renderDayTurns();return;}
+ if(speechRemaining===0){
+  speechIndex++;
+  const next=currentSpeaker();
+  if(!next){
+   if(game?.round===1&&game.introCapo?.active&&game.introCapo.stage==='speech'){
+    game.introCapo.stage='vote';
+    log('صحبت‌های روز معارفه تمام شد؛ رأی‌گیری تیر کاپو آغاز می‌شود.');
+    renderDayTurns();
+    renderIntroCapo();
+   }else renderDayTurns();
+   return;
+  }
+  speechRemaining=speechDuration(next);
+ }
+ const p=currentSpeaker();
+ if(!p){
+  if(game?.round===1&&game.introCapo?.active&&game.introCapo.stage==='speech'){
+   game.introCapo.stage='vote';
+   log('صحبت‌های روز معارفه تمام شد؛ رأی‌گیری تیر کاپو آغاز می‌شود.');
+   renderDayTurns();
+   renderIntroCapo();
+  }else renderDayTurns();
+  return;
+ }
  speechRunning=true;renderDayTurns();
  speechTimer=setInterval(()=>{speechRemaining=Math.max(0,speechRemaining-1);if(speechRemaining===0){stopSpeechTimer();renderDayTurns();alert('وقت صحبت '+p.name+' تمام شد. نفر بعدی: '+(currentSpeakerAfter()?currentSpeakerAfter().name:'پایان نوبت‌ها')+'.');}else renderDayTurns();},1000);
 }
