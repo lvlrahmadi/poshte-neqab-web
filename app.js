@@ -161,7 +161,7 @@ function renderNameReview(){
  '<div class="actions"><input id="addPlayerName" type="text" placeholder="افزودن بازیکن دیگر"><button type="button" id="addPlayerNameBtn" class="secondary">افزودن</button></div>';
  host.querySelectorAll('[data-review-name]').forEach(el=>el.addEventListener('change',()=>{stagedNames[Number(el.dataset.reviewName)]=el.value.trim();}));
  host.querySelectorAll('[data-remove-name]').forEach(el=>el.addEventListener('click',()=>{stagedNames.splice(Number(el.dataset.removeName),1);renderNameFlow();}));
- $('addPlayerNameBtn').onclick=()=>{const value=$('addPlayerName').value.trim();if(!value)return alert('نام بازیکن را وارد کن.');if(stagedNames.some(x=>x.toLocaleLowerCase()===value.toLocaleLowerCase()))return alert('این نام قبلاً ثبت شده است.');if(stagedNames.length>=30)return alert('حداکثر ۲۰ بازیکن می‌توانند وارد بازی شوند.');stagedNames.push(value);renderNameFlow();};
+ $('addPlayerNameBtn').onclick=()=>{const value=$('addPlayerName').value.trim();if(!value)return alert('نام بازیکن را وارد کن.');if(stagedNames.some(x=>x.toLocaleLowerCase()===value.toLocaleLowerCase()))return alert('این نام قبلاً ثبت شده است.');if(stagedNames.length>=30)return alert('حداکثر ۳۰ بازیکن می‌توانند وارد بازی شوند.');stagedNames.push(value);renderNameFlow();};
 }
 function renderNameFlow(){
  const n=stagedNames.length;
@@ -179,7 +179,7 @@ $('confirmPlayerName').onclick=()=>{
  const value=$('singlePlayerName').value.trim();
  if(!value)return alert('اول نام بازیکن را وارد کن.');
  if(stagedNames.some(x=>x.toLocaleLowerCase()===value.toLocaleLowerCase()))return alert('این نام قبلاً ثبت شده؛ اسم تکراری وارد نکن.');
- if(stagedNames.length>=30)return alert('حداکثر ۲۰ بازیکن مجاز است.');
+ if(stagedNames.length>=30)return alert('حداکثر ۳۰ بازیکن مجاز است.');
  stagedNames.push(value);renderNameFlow();$('singlePlayerName').focus();
 };
 $('singlePlayerName').addEventListener('keydown',e=>{if(e.key==='Enter')$('confirmPlayerName').click();});
