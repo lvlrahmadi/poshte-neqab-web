@@ -165,6 +165,32 @@ input::placeholder,textarea::placeholder{color:#d94a4a!important}
 hr,.divider{border-color:#701818!important}
 .status,.warning,.hint,.tiny,label,h1,h2,h3,strong,b,p,span{color:#ff3535!important}
 
+
+/* God dashboard: clear next-step guidance, large touch targets and recent activity */
+.god-current-step{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:10px 0 12px;padding:12px 13px;border:1px solid #8d3d46;border-radius:13px;background:linear-gradient(135deg,#302027,#15161d);box-shadow:inset 0 1px #f4d99b0b}
+.god-current-step-copy{min-width:0;flex:1}
+.god-current-step-title{display:block;margin:5px 0 4px;color:#f1d9ad;font-size:15px;line-height:1.7}
+.god-current-step-text{margin:0;color:#d8d0c5;font-size:12px;line-height:1.9}
+.god-current-step>.tag{flex:0 0 auto;max-width:34%;white-space:normal;text-align:center;line-height:1.6}
+.god-activity{margin-top:12px;padding:11px;background:#111319;border:1px solid var(--line);border-radius:12px}
+.god-activity-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;color:var(--gold);font-size:13px}
+.god-activity-list{display:grid;gap:6px}
+.god-activity-item{display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px;align-items:start;padding:7px 8px;background:#1b1d25;border-radius:8px;color:#e1dbd1;font-size:11px;line-height:1.85}
+.god-activity-time{color:#d7b36a;white-space:nowrap;font-variant-numeric:tabular-nums}
+.god-activity-empty{margin:0;color:var(--muted);font-size:12px;line-height:1.8}
+@media(max-width:900px){
+ #game .god-dashboard{flex:0 0 auto;min-height:auto;overflow:visible}
+ #game .god-quick-grid button{min-height:56px;padding:10px 8px;font-size:13px;line-height:1.7;white-space:normal}
+ #game .god-quick-grid #godAdvancePhase{min-height:62px;font-size:14px}
+}
+@media(max-width:380px){
+ #game .god-current-step{gap:7px;padding:10px}
+ #game .god-current-step-title{font-size:14px}
+ #game .god-current-step>.tag{max-width:31%;padding:4px 6px;font-size:10px}
+ #game .god-quick-grid{gap:6px}
+ #game .god-quick-grid button{padding:9px 6px;font-size:12px}
+}
+
 </style></head><body>
 <header><h1>پشت نقاب</h1><p>هر چهره، یک راز</p></header><main>
 <section class="card welcome-card" id="welcome">
@@ -225,6 +251,14 @@ hr,.divider{border-color:#701818!important}
 <section class="card hidden" id="game"><div class="section-head"><h2>میز بازی</h2><span class="tag" id="roundLabel">شب ۱</span></div><div class="row"><div class="stat"><span class="tiny">فاز</span><b id="phaseName">شب</b></div><div class="stat"><span class="tiny">بازیکنان زنده</span><b id="aliveCount">۰</b></div><div class="stat"><span class="tiny">وضعیت</span><b id="winStatus">در جریان</b></div></div>
 <section class="card god-dashboard" id="godDashboard" aria-label="داشبورد گاد">
  <div class="god-dashboard-head"><h2>میز فرمان گاد</h2><span class="tag">دسترسی سریع</span></div>
+ <div class="god-current-step" aria-live="polite">
+  <div class="god-current-step-copy">
+   <span class="tiny">گام فعال بازی</span>
+   <strong id="godDashGuideTitle" class="god-current-step-title">آماده‌سازی بازی</strong>
+   <p id="godDashGuideText" class="god-current-step-text">وضعیت و اقدام بعدی بازی اینجا نمایش داده می‌شود.</p>
+  </div>
+  <span class="tag" id="godDashGuideBadge">در جریان</span>
+ </div>
  <div class="god-dashboard-stats">
   <div class="stat"><span class="tiny">مرحله فعلی</span><b id="godDashPhase">شب ۱</b></div>
   <div class="stat"><span class="tiny">بازیکنان زنده</span><b id="godDashAlive">۰</b></div>
@@ -239,7 +273,10 @@ hr,.divider{border-color:#701818!important}
   <button class="secondary" id="godOpenIntro">📜 متن روز اول</button>
   <button class="secondary" id="godOpenCapo">🔫 مدیریت تفنگ کاپو</button>
  </div>
- <div class="latest-event"><strong>آخرین اتفاق:</strong> <span id="godDashLatest">هنوز رویدادی ثبت نشده است.</span></div>
+ <div class="god-activity">
+  <div class="god-activity-head"><strong>اتفاقات اخیر بازی</strong><span class="tiny">۳ رویداد آخر</span></div>
+  <div id="godDashActivity" class="god-activity-list" aria-live="polite"><p class="god-activity-empty">هنوز اتفاقی ثبت نشده است.</p></div>
+ </div>
 </section><div class="actions"><button id="openIntroPage" class="secondary hidden">📜 نمایش متن معرفی روز اول</button></div><section id="introPage" class="intro-page hidden" aria-label="متن معرفی روز اول"><div class="intro-sheet"><div class="section-head"><h2>متن گوینده — شروع روز اول</h2><span class="tag">ویژه گاد</span></div><p class="hint">گاد این متن را برای بازیکنان با صدای بلند بخواند.</p><div id="introText" class="intro-text"></div><div class="actions"><button id="closeIntroPage">بازگشت به میز بازی</button></div></div></section><hr><h3>نمایش خصوصی نقش</h3><p class="hint">گوشی را به هر بازیکن بدهید تا نامش را انتخاب کند، نقش را ببیند و سپس پنهان کند. نقش دیگران در این بخش نمایش داده نمی‌شود.</p><div id="playerList"></div><div id="reveal" class="reveal hidden">
  <div class="role-cinema">
   <div class="role-cinema-top">POSHTE NEGHAB <span>·</span> پرونده محرمانه</div>
@@ -265,7 +302,7 @@ hr,.divider{border-color:#701818!important}
   </div>
 </div><p class="hint">این پنل شامل اطلاعات محرمانه همه نقش‌هاست؛ فقط گاد باید آن را ببیند.</p><div class="section-head roster-head"><h3>فهرست محرمانه نقش‌ها</h3><button id="toggleRoster" class="secondary roster-toggle" type="button" aria-label="نمایش فهرست نقش‌ها" title="نمایش فهرست نقش‌ها">☰</button></div><div id="secretRoster" class="roster-content hidden"></div><hr><h3>ثبت اقدام شب</h3><label>نوع اقدام</label><select id="actionType"><option value="protect_doctor">نجات پزشک</option><option value="protect_guard">محافظت محافظ</option><option value="jam">اختلال خاموش‌کننده</option><option value="frame">قاب‌سازی</option><option value="investigate">استعلام کارآگاه</option><option value="interrogate">استعلام بازپرس</option><option value="track">ردیابی</option><option value="mafia_attack">حمله مافیا</option><option value="serial_attack">حمله جانی</option><option value="poison">خنثی‌سازی نجات با سم‌ساز</option><option value="shot">شلیک تک‌تیرانداز</option><option value="verify">راستی‌آزمایی متخصص</option><option value="deceive">تغییر ردپای فریبکار</option><option value="personal_bond">انتخاب موکل محافظ شخصی</option><option value="psych">محدودیت زمان روان‌شناس</option><option value="judge">رأی‌گیری مجدد قاضی</option><option value="reporter">گزارش خبرنگار</option></select><div id="actionFields"></div><div class="actions"><button id="applyAction">ثبت و حل اقدام</button><button class="secondary" id="undoAction">برگرداندن آخرین اقدام</button></div><hr><h3>حذف و رأی‌گیری روز</h3><label>بازیکن</label><select id="eliminateTarget"></select><label>علت</label><select id="eliminateReason"><option>رأی‌گیری روز</option><option>شلیک مافیا</option><option>قدرت نقش</option><option>تصمیم گاد</option></select><div class="actions"><button class="danger" id="eliminateBtn">ثبت حذف</button></div><hr><h3>تأیید برد مستقل</h3><p class="hint">برای فرصت‌طلب و محافظ شخصی، شرط برد به توافق سناریو وابسته است. پس از بررسی شرط اختصاصی، گاد می‌تواند برد را دستی تأیید کند.</p><label>بازیکن مستقل</label><select id="independentWinner"></select><div class="actions"><button class="green" id="declareIndependentWin">تأیید برد مستقل</button></div><hr><h3>گزارش رویدادها</h3><div id="eventLog"></div><div class="actions"><button class="secondary" id="exportSave">دانلود پشتیبان بازی</button><button class="secondary" id="closeHost">بستن پنل</button></div></div><div class="actions"><button class="danger" id="endGame">پایان بازی و بازگشت</button></div></section>
 </main><footer>پشت نقاب · دستیار گاد · ذخیره محلی روی همین دستگاه</footer>
-<script src="engine.js?v=14"></script><script src="app.js?v=29"></script>
+<script src="engine.js?v=14"></script><script src="app.js?v=30"></script>
 <script>
 (()=> {
  const game=document.getElementById('game');

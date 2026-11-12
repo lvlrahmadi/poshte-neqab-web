@@ -257,17 +257,48 @@ function actorOptions(type){const role=ACTION_ROLE[type];return game.players.fil
 function renderGodDashboard(){
  if(!game)return;
  const introMafia=game.phase==='شب معارفه مافیا';
+ const capoMafiaStage=game.round===1&&game.introCapo?.active&&game.introCapo.stage==='mafia';
  const introDay=game.phase==='روز'&&game.round===1&&game.introCapo?.active&&!game.introCapo?.completed;
- $('godDashPhase').textContent=introMafia?'شب معارفه مافیا':introDay?'روز معارفه':(game.phase==='شب'?'شب ':'روز ')+fa(game.round);
+ const introDone=game.phase==='روز'&&game.round===1&&game.introCapo?.active&&game.introCapo?.completed;
+ const gameWinner=winner();
+ const stage=game.introCapo?.stage||'speech';
+ const stageGuides={
+  speech:{title:'روز معارفه · نوبت صحبت',text:'نوبت بازیکنان را یکی‌یکی تمام کن؛ پس از آخرین نفر، رأی‌گیری تیر کاپو آغاز می‌شود.',badge:'معارفه'},
+  vote:{title:'رأی‌گیری تیر کاپو',text:'اسم رأی‌دهنده را ببین و یکی از بازیکنان دیگر را انتخاب کن؛ رأی همان لحظه ثبت می‌شود.',badge:'رأی‌گیری'},
+  voteResult:{title:'نتیجه رأی‌گیری تیر کاپو',text:'آرا را مرور و نتیجه را تأیید کن؛ اگر رأی‌ها مساوی باشند، مرحله قرعه‌کشی باز می‌شود.',badge:'نتیجه'},
+  tie:{title:'رفع تساوی رأی‌ها',text:'قرعه‌کشی افراد مساوی را تکمیل کن تا دارنده تفنگ مشخص شود.',badge:'قرعه‌کشی'},
+  suspects:{title:'انتخاب دو مظنون',text:'دارنده تفنگ دو بازیکن را یکی‌یکی انتخاب می‌کند؛ انتخاب دوم، شب معارفه مافیا را آغاز می‌کند.',badge:'تفنگ کاپو'},
+  mafia:{title:'شب معارفه مافیا · انتخاب تیر اصلی',text:'پدرخوانده شماره تیر اصلی را از میان سه تیر انتخاب می‌کند.',badge:'تفنگ کاپو'},
+  defense:{title:'روز معارفه · دفاع',text:'به دو مظنون فرصت دفاع بده؛ بعد وارد مرحله تعیین مقصد سه تیر شو.',badge:'تفنگ کاپو'},
+  shoot:{title:'روز معارفه · شلیک سه تیر',text:'مقصد هر سه تیر را مشخص کن؛ دو مظنون و یک شلیک به هوا باید ثبت شوند.',badge:'تفنگ کاپو'}
+ };
+ let guide;
+ if(gameWinner)guide={title:'بازی به پایان رسیده',text:gameWinner,badge:'نتیجه نهایی'};
+ else if(introMafia)guide={title:'شب معارفه مافیا',text:'اعضای مافیا یکدیگر را بشناسند؛ بعد بازی وارد روز معارفه می‌شود.',badge:'شروع بازی'};
+ else if(capoMafiaStage)guide=stageGuides.mafia;
+ else if(introDay)guide=stageGuides[stage]||{title:'ادامه مراحل روز معارفه',text:'مرحله فعال را از پنل گاد دنبال و تکمیل کن.',badge:'معارفه'};
+ else if(introDone)guide={title:'معارفه و تیر کاپو تکمیل شد',text:'مراحل روز معارفه تمام شده است؛ با فرمان گاد وارد مرحله بعد شو.',badge:'آماده ادامه'};
+ else if(game.phase==='شب')guide={title:'شب '+fa(game.round),text:'اقدام‌های شب را از پنل گاد ثبت کن؛ با ورود به روز، نتیجه حمله‌ها محاسبه می‌شود.',badge:'فاز شب'};
+ else guide={title:'روز '+fa(game.round),text:'نوبت صحبت و تصمیم‌های روز را مدیریت کن؛ پس از پایان روز، شب بعد را آغاز کن.',badge:'فاز روز'};
+ const phaseLabel=introMafia?'شب معارفه مافیا':capoMafiaStage?'شب معارفه مافیا · تیر کاپو':introDay?'روز معارفه':introDone?'روز معارفه · تکمیل‌شده':(game.phase==='شب'?'شب ':'روز ')+fa(game.round);
+ $('godDashPhase').textContent=phaseLabel;
  $('godDashAlive').textContent=fa(alive().length);
  $('godDashActions').textContent=fa(game.actions.filter(a=>a.round===game.round).length);
  const speaker=game.phase==='روز'&&!(game.round===1&&game.introCapo?.active&&game.introCapo.stage!=='speech')?currentSpeaker():null;
  $('godDashSpeaker').textContent=speaker?speaker.name:'—';
- $('godAdvancePhase').textContent=introMafia?'پایان شب معارفه و ورود به روز معارفه':introDay?'ادامه مراحل معارفه':'رفتن به '+(game.phase==='شب'?'روز و حل شب':'شب بعد');
- $('godAdvancePhase').disabled=false;
+ $('godDashGuideTitle').textContent=guide.title;
+ $('godDashGuideText').textContent=guide.text;
+ $('godDashGuideBadge').textContent=guide.badge;
+ $('godAdvancePhase').textContent=gameWinner?'بازی پایان یافته':introMafia?'پایان شب معارفه و ورود به روز معارفه':capoMafiaStage?'ادامه انتخاب تیر اصلی کاپو':introDay?(stage==='speech'?'رفتن به مدیریت نوبت صحبت':'ادامه مراحل تفنگ کاپو'):introDone?'پایان روز معارفه و رفتن به مرحله بعد':game.phase==='شب'?'حل شب و ورود به روز':'پایان روز و رفتن به شب بعد';
+ $('godAdvancePhase').disabled=!!gameWinner;
  $('godOpenCapo').disabled=!(game.round===1&&game.introCapo?.active&&!game.introCapo.completed);
  $('godOpenIntro').disabled=!(game.phase==='روز'&&game.round===1);
- $('godDashLatest').textContent=game.logs?.[0]?.message||'هنوز رویدادی ثبت نشده است.';
+ const recent=(game.logs||[]).slice(0,3);
+ $('godDashActivity').innerHTML=recent.map(item=>{
+  const stamp=Date.parse(item.at||'');
+  const time=Number.isFinite(stamp)?new Date(stamp).toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'}):'—';
+  return '<div class="god-activity-item"><span class="god-activity-time">'+esc(time)+'</span><span>'+esc(item.message||'رویداد ثبت شد.')+'</span></div>';
+ }).join('')||'<p class="god-activity-empty">هنوز اتفاقی ثبت نشده است.</p>';
 }
 $('godAdvancePhase').onclick=()=>{const introDay=game?.phase==='روز'&&game.round===1&&game.introCapo?.active&&!game.introCapo?.completed;if(introDay){const target=game.introCapo.stage==='speech'?'dayTurns':'introCapoPanel';$(target)?.scrollIntoView({behavior:'smooth',block:'start'});return;}$('nextPhase').click();};
 $('godOpenTurns').onclick=()=>{$('hostPanel').classList.remove('hidden');$('dayTurns').scrollIntoView({behavior:'smooth',block:'start'});};
