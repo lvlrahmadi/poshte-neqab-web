@@ -67,9 +67,21 @@
  #game .game-view{display:none}
  #game .game-view.active{display:block}
 }
+
+/* Cinematic Mafia God welcome screen */
+#welcome.welcome-card{position:relative;isolation:isolate;overflow:hidden;min-height:min(76vh,720px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:38px 22px 30px;margin-top:10px;border:1px solid #b9955c88;border-radius:22px;background:linear-gradient(180deg,rgba(7,8,14,.22) 0%,rgba(8,9,15,.68) 48%,rgba(8,9,15,.96) 100%),url('assets/mafia-god-welcome.svg') center 38%/cover no-repeat;box-shadow:0 24px 70px #000b,inset 0 0 80px #0008}
+#welcome.welcome-card:before{content:"";position:absolute;inset:12px;border:1px solid #d3ad6b55;border-radius:15px;pointer-events:none;z-index:-0}
+#welcome .welcome-logo{position:relative;display:flex;flex-direction:column;align-items:center;gap:0;margin:0 auto 18px;line-height:.88;font-family:Georgia,'Times New Roman',serif;font-weight:900;letter-spacing:5px;text-shadow:0 4px 18px #000,0 0 25px #a52a35aa}
+#welcome .welcome-logo span{font-size:clamp(28px,7vw,42px);color:#f1d49a;background:linear-gradient(#fff1c9,#c39243 55%,#805222);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+#welcome .welcome-logo strong{font-size:clamp(48px,12vw,76px);letter-spacing:8px;color:#b72f3d;background:linear-gradient(#f06a6d,#a92736 55%,#581520);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-top:8px}
+#welcome>.tag{position:relative;z-index:1;background:#100d11d9;border-color:#b9955c;color:#e7c985}
+#welcome h2{position:relative;z-index:1;font-size:clamp(25px,6vw,34px);color:#f2dfb8;text-shadow:0 3px 16px #000;margin:16px 0 10px}
+#welcome .welcome-lead,#welcome .welcome-note{position:relative;z-index:1;color:#f1e9dc;text-shadow:0 2px 8px #000;max-width:460px}
+#welcome button{position:relative;z-index:1;background:linear-gradient(135deg,#e1c17c,#a77a38);color:#17110b;box-shadow:0 8px 26px #0009;border:1px solid #f4d99b}
+@media(max-width:560px){#welcome.welcome-card{min-height:calc(100dvh - 112px);padding:30px 18px 24px;background-position:center 35%}#welcome .welcome-note{font-size:11px}}
 </style></head><body>
 <header><h1>پشت نقاب</h1><p>هر چهره، یک راز</p></header><main>
-<section class="card welcome-card" id="welcome"><div class="welcome-mark" aria-hidden="true">🎭</div><p class="tag">دستیار هوشمند بازی مافیا</p><h2>خوش اومدی گاد!</h2><p class="welcome-lead">پشت نقاب آماده‌ست تا کنار تو بازی رو مدیریت کنه؛ از پخش نقش‌ها تا مدیریت شب، روز و اتفاق‌های حساس بازی.</p><button id="enterGodDesk">ورود به میز گاد</button><p class="welcome-note">اینجا همه‌چیز برای تمرکز گاد روی تصمیم‌ها آماده می‌شه؛ مدیریت جزئیات رو بسپار به پشت نقاب.</p></section>
+<section class="card welcome-card" id="welcome"><div class="welcome-logo" aria-label="MAFIA GOD"><span>MAFIA</span><strong>GOD</strong></div><p class="tag">دستیار هوشمند بازی مافیا</p><h2>خوش اومدی گاد!</h2><p class="welcome-lead">پشت نقاب آماده‌ست تا کنار تو بازی رو مدیریت کنه؛ از پخش نقش‌ها تا مدیریت شب، روز و اتفاق‌های حساس بازی.</p><button id="enterGodDesk">ورود به میز گاد</button><p class="welcome-note">اینجا همه‌چیز برای تمرکز گاد روی تصمیم‌ها آماده می‌شه؛ مدیریت جزئیات رو بسپار به پشت نقاب.</p></section>
 <section class="card hidden" id="setup"><h2>ساخت بازی جدید</h2><label>ثبت مرحله‌ای بازیکنان</label>
 <div class="name-entry-card" id="nameEntryCard">
  <p class="hint" id="nameStepHint">نام بازیکن اول را وارد کن؛ پس از تأیید، سراغ نفر بعدی می‌رویم.</p>
