@@ -1,7 +1,7 @@
 'use strict';
 (async function loadBundledPersianFonts(){
   async function loadFont(name,path,weight='400'){
-    const response=await fetch(path+'?v=2',{cache:'no-store'});
+    const response=await fetch(path,{cache:'no-store'});
     if(!response.ok)throw new Error('Font file unavailable: '+path+' ('+response.status+')');
     const encoded=(await response.text()).replace(/\\s+/g,'');
     if(!encoded||encoded.length<1000)throw new Error('Font data is empty or incomplete: '+path);
