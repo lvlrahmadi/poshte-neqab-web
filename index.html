@@ -130,6 +130,23 @@ hr{border-color:#a17b4b55}
 .ticket-window .actions button{font-size:12px;padding:10px 8px}
 @media(max-width:380px){#welcome .welcome-masks{width:min(100%,280px)}.booth-clerk{width:76px;flex-basis:76px}.booth-copy strong{font-size:17px}}
 
+
+/* Mobile-first cinematic welcome and male ticket clerk */
+@media(max-width:560px){
+ body:has(#welcome:not(.hidden)) header{display:none}
+ body:has(#welcome:not(.hidden)) main{padding:0;max-width:none}
+ #welcome.welcome-card{min-height:100dvh;margin:0;border-radius:0;border:0;padding:34px 18px 24px;background-position:center 38%;background-size:cover}
+ #welcome .welcome-masks{width:min(100%,300px);margin:0 auto 8px}
+ #welcome .welcome-masks svg{width:100%;height:auto}
+ #welcome .welcome-brand{margin:4px auto 12px}
+ #welcome h2{margin:12px 0 8px;font-size:25px}
+ #welcome .welcome-lead{font-size:13px;line-height:1.9}
+ #welcome .welcome-note{font-size:11px}
+}
+.booth-scene{align-items:center;min-height:154px}
+.booth-clerk{width:112px;height:138px;flex:0 0 112px;object-fit:contain;filter:drop-shadow(0 7px 13px #000)}
+@media(max-width:380px){.booth-clerk{width:94px;height:126px;flex-basis:94px}}
+
 </style></head><body>
 <header><h1>پشت نقاب</h1><p>هر چهره، یک راز</p></header><main>
 <section class="card welcome-card" id="welcome">
@@ -161,16 +178,21 @@ hr{border-color:#a17b4b55}
 <div class="name-entry-card cinema-booth" id="nameEntryCard">
  <div class="booth-marquee"><span class="booth-light"></span><span>گیشه ثبت بازیکنان</span><span class="booth-light"></span></div>
  <div class="booth-scene">
-  <svg class="booth-clerk" viewBox="0 0 120 130" role="img" aria-label="متصدی گیشه سینما">
-   <path d="M24 122 Q25 77 60 76 Q95 77 96 122Z" fill="#17151c" stroke="#c49a5c" stroke-width="2"/>
-   <path d="M39 53 Q37 17 60 15 Q84 17 81 53 L76 75 Q60 88 44 75Z" fill="#bd895e"/>
-   <path d="M37 43 Q37 7 61 8 Q88 8 84 48 L76 35 Q60 23 43 38Z" fill="#17121a"/>
-   <path d="M45 48h12 M64 48h12" stroke="#20151a" stroke-width="4" stroke-linecap="round"/>
-   <path d="M53 64 Q60 70 68 64" fill="none" stroke="#6d302b" stroke-width="2.5" stroke-linecap="round"/>
-   <path d="M43 82L60 100L77 82" fill="none" stroke="#d8b36b" stroke-width="3"/>
-   <path d="M12 119H108" stroke="#d8b36b" stroke-width="3"/>
-  </svg>
-  <div class="booth-copy"><strong>سلام گاد!</strong><span>اسامی بازیکنان رو یکی‌یکی تحویل می‌گیرم.</span><small>بلیت ورود به بازی فقط با ثبت نام صادر می‌شه.</small></div>
+  <svg class="booth-clerk" viewBox="0 0 160 180" role="img" aria-label="مرد متصدی گیشه با کت‌وشلوار و کلاه، در حال تحویل بلیت">
+   <defs><linearGradient id="clerkSuit" x2="0" y2="1"><stop stop-color="#383039"/><stop offset="1" stop-color="#100f15"/></linearGradient><linearGradient id="clerkSkin" x2="0" y2="1"><stop stop-color="#e5b88e"/><stop offset="1" stop-color="#9d6549"/></linearGradient></defs>
+   <path d="M18 178 Q20 105 80 101 Q140 105 142 178Z" fill="url(#clerkSuit)" stroke="#c49a5c" stroke-width="2"/>
+   <path d="M58 102 L80 137 L102 102 L94 178 H66Z" fill="#e7dfd2"/>
+   <path d="M75 126 L80 139 L86 126 L92 178 H68Z" fill="#9b2635"/>
+   <path d="M55 49 Q53 22 80 20 Q108 22 105 53 L99 91 Q80 112 61 91Z" fill="url(#clerkSkin)"/>
+   <path d="M53 65 Q57 85 68 91 Q80 98 92 91 Q103 85 107 65 L103 88 Q95 105 80 107 Q64 105 57 88Z" fill="#33201d"/>
+   <path d="M52 49 Q50 19 79 17 Q110 19 108 51 L99 43 Q82 35 62 44Z" fill="#17131a"/>
+   <path d="M42 43 Q80 22 118 43 L111 52 Q80 42 49 53Z" fill="#211820" stroke="#d4ad6b" stroke-width="2"/>
+   <path d="M63 59h12 M86 59h12" stroke="#24171a" stroke-width="4" stroke-linecap="round"/>
+   <path d="M74 78 Q80 83 86 78" fill="none" stroke="#6d302b" stroke-width="2.5" stroke-linecap="round"/>
+   <path d="M108 112 L139 137 L130 157 L103 132Z" fill="#bd8b51" stroke="#f1d69b" stroke-width="2"/>
+   <path d="M113 121l19 15 M109 128l19 15" stroke="#5b3922" stroke-width="2"/>
+   <path d="M16 177H145" stroke="#d8b36b" stroke-width="3"/>
+  </svg>  <div class="booth-copy"><strong>سلام گاد!</strong><span>اسامی بازیکنان رو یکی‌یکی تحویل می‌گیرم.</span><small>بلیت ورود به بازی فقط با ثبت نام صادر می‌شه.</small></div>
  </div>
  <div class="ticket-window">
   <div class="ticket-label">نام بازیکن بعدی</div>
