@@ -1,0 +1,6 @@
+{
+  "appId": "com.poshteneghab.app",
+  "appName": "پشت نقاب",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
