@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#11131a"><meta name="description" content="پشت نقاب؛ مدیریت هوشمند بازی مافیا">
+<meta name="theme-color" content="#000000"><meta name="description" content="پشت نقاب؛ مدیریت هوشمند بازی مافیا">
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg?v=14">
 <title>پشت نقاب</title>
 <style>
@@ -146,6 +146,24 @@ hr{border-color:#a17b4b55}
 .booth-scene{align-items:center;min-height:154px}
 .booth-clerk{width:112px;height:138px;flex:0 0 112px;object-fit:contain;filter:drop-shadow(0 7px 13px #000)}
 @media(max-width:380px){.booth-clerk{width:94px;height:126px;flex-basis:94px}}
+
+
+/* TEMPORARY STRUCTURE-FIRST THEME: pure black + bright red */
+:root{color-scheme:dark;--bg:#000;--panel:#000;--panel2:#000;--gold:#ff3030;--muted:#ff5555;--red:#ff3030;--green:#ff3030;--line:#701818}
+html,body{background:#000!important;color:#ff3535!important}
+body{background:#000!important}
+body *{color:#ff3535!important;box-shadow:none!important;text-shadow:none!important}
+header,main,footer,.card,.welcome-card,.god-dashboard,.name-entry-card,.ticket-window,.player,.role-dropdown,.roster-player,.stat,.log,.reveal,.role-cinema,.intro-page,.intro-sheet,.game-tabs,.game-view,.latest-event{background:#000!important;background-image:none!important;border-color:#701818!important}
+#welcome.welcome-card{background:#000!important;background-image:none!important;border:0!important}
+#welcome.welcome-card:before,.role-cinema:before,.role-cinema:after{display:none!important}
+.welcome-masks,.booth-clerk,.role-cinema-image,.role-cinema-orbit{display:none!important}
+button,button.secondary,button.danger,button.green,.role-ack,.game-tabs button,.game-tabs button.active{background:#000!important;color:#ff3535!important;border:1px solid #ff3030!important}
+button:disabled{opacity:.45}
+input,select,textarea,.count-display{background:#000!important;color:#ff3535!important;border:1px solid #a51f1f!important}
+input::placeholder,textarea::placeholder{color:#d94a4a!important}
+.tag{background:#000!important;color:#ff4545!important;border-color:#a51f1f!important}
+hr,.divider{border-color:#701818!important}
+.status,.warning,.hint,.tiny,label,h1,h2,h3,strong,b,p,span{color:#ff3535!important}
 
 </style></head><body>
 <header><h1>پشت نقاب</h1><p>هر چهره، یک راز</p></header><main>
