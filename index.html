@@ -149,24 +149,6 @@ hr{border-color:#a17b4b55}
 @media(max-width:380px){.booth-clerk{width:94px;height:126px;flex-basis:94px}}
 
 
-/* TEMPORARY STRUCTURE-FIRST THEME: pure black + bright red */
-:root{color-scheme:dark;--bg:#000;--panel:#000;--panel2:#000;--gold:#fff;--muted:#fff;--red:#fff;--green:#fff;--line:#701818}
-html,body{background:#000!important;color:#fff!important}
-body{background:#000!important}
-body *{color:#fff!important;box-shadow:none!important;text-shadow:none!important}
-header,main,footer,.card,.welcome-card,.god-dashboard,.name-entry-card,.ticket-window,.player,.role-dropdown,.roster-player,.stat,.log,.reveal,.role-cinema,.intro-page,.intro-sheet,.game-tabs,.game-view,.latest-event{background:#000!important;background-image:none!important;border-color:#701818!important}
-#welcome.welcome-card{background:#000!important;background-image:none!important;border:0!important}
-#welcome.welcome-card:before,.role-cinema:before,.role-cinema:after{display:none!important}
-.welcome-masks,.booth-clerk,.role-cinema-image,.role-cinema-orbit{display:none!important}
-button,button.secondary,button.danger,button.green,.role-ack,.game-tabs button,.game-tabs button.active{background:#000!important;color:#fff!important;border:1px solid #ff3030!important}
-button:disabled{opacity:.45}
-input,select,textarea,.count-display{background:#000!important;color:#fff!important;border:1px solid #a51f1f!important}
-input::placeholder,textarea::placeholder{color:#fff!important}
-.tag{background:#000!important;color:#fff!important;border-color:#a51f1f!important}
-hr,.divider{border-color:#701818!important}
-.status,.warning,.hint,.tiny,label,h1,h2,h3,strong,b,p,span{color:#fff!important}
-
-
 /* God dashboard: clear next-step guidance, large touch targets and recent activity */
 .god-current-step{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:10px 0 12px;padding:12px 13px;border:1px solid #8d3d46;border-radius:13px;background:linear-gradient(135deg,#302027,#15161d);box-shadow:inset 0 1px #f4d99b0b}
 .god-current-step-copy{min-width:0;flex:1}
@@ -245,27 +227,39 @@ body:has(#setup:not(.hidden)) main{min-height:100dvh;display:flex;align-items:fl
 #roleHandoffScreen #playerList{min-height:58vh;display:flex;align-items:center;justify-content:center}
 #roleHandoffScreen .reveal-player-name,#roleHandoffScreen .reveal-next{display:block;width:100%;max-width:460px;min-height:82px;font-size:clamp(23px,6vw,32px);border:1px solid #c49a5c;background:#17121a;color:#fff;box-shadow:0 12px 36px #0009}
 #roleHandoffScreen #reveal:not(.hidden){display:block!important;visibility:visible!important;width:100%;margin:0}
-/* Final requested presentation: pure black, white Nastaliq everywhere */
-:root{color-scheme:dark;--bg:#000;--panel:#000;--panel2:#000;--gold:#fff;--muted:#fff;--red:#fff;--green:#fff;--line:#fff}
-html,body{background:#000!important;color:#fff!important}
+/* Final visual foundation: real local artwork, white typography and bright-red frames */
+:root{color-scheme:dark;--bg:#050508;--panel:#08090d;--panel2:#111116;--gold:#fff;--muted:#fff;--red:#ff3030;--green:#fff;--line:#ff3030}
+html,body{background:#050508!important;color:#fff!important}
 body,body *{font-family:'AradLocal',serif!important;color:#fff!important;text-shadow:none!important}
-body{background-image:none!important}
-header,main,footer,.card,.welcome-card,.god-dashboard,.name-entry-card,.ticket-window,.player,.role-dropdown,.roster-player,.stat,.log,.reveal,.role-cinema,.intro-page,.intro-sheet,.game-tabs,.game-view,.latest-event{background:#000!important;background-image:none!important;border-color:#fff!important}
-#welcome.welcome-card{background:#000!important;border:1px solid #fff!important}
-button,button.secondary,button.danger,button.green,.role-ack,.game-tabs button,.game-tabs button.active{background:#000!important;color:#fff!important;border:1px solid #fff!important}
-input,select,textarea,.count-display{background:#000!important;color:#fff!important;border:1px solid #fff!important}
+body{background:linear-gradient(180deg,rgba(0,0,0,.66),rgba(0,0,0,.9)),url('assets/mafia-god-welcome.svg') center top/cover fixed no-repeat!important}
+header,footer,main{background:transparent!important}
+.card,.god-dashboard,.name-entry-card,.ticket-window,.player,.role-dropdown,.roster-player,.stat,.log,.reveal,.role-cinema,.intro-page,.intro-sheet,.game-tabs,.game-view,.latest-event{background:linear-gradient(145deg,rgba(16,16,21,.96),rgba(0,0,0,.94))!important;background-image:linear-gradient(145deg,rgba(16,16,21,.96),rgba(0,0,0,.94))!important;border-color:#ff3030!important}
+#welcome.welcome-card{background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.78)),url('assets/mafia-god-welcome.svg') center 38%/cover no-repeat!important;border:1px solid #ff3030!important}
+#welcome .welcome-masks,.role-cinema-image,.role-cinema-orbit{display:block!important}
+#welcome .welcome-brand span,#welcome .welcome-brand strong{-webkit-text-fill-color:#fff!important;background:none!important;color:#fff!important}
+button,button.secondary,button.danger,button.green,.role-ack,.game-tabs button,.game-tabs button.active,#continueToMafiaIntro{background:#050508!important;color:#fff!important;border:1px solid #ff3030!important;box-shadow:0 0 14px rgba(255,48,48,.12)!important}
+input,select,textarea,.count-display{background:#050508!important;color:#fff!important;border:1px solid #ff3030!important}
 input::placeholder,textarea::placeholder{color:#fff!important}
-.tag{background:#000!important;color:#fff!important;border-color:#fff!important}
-hr{border-color:#fff!important}
-.post-role-intro{position:fixed;inset:0;z-index:10001;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:18px;background:#000!important;color:#fff!important}
-.post-role-intro-sheet{width:100%;max-width:720px;margin:auto;padding:22px 16px;text-align:center;background:#000!important;border:1px solid #fff;border-radius:14px}
-.post-role-intro-sheet h2{margin:0 0 8px;color:#fff!important;font-size:24px}
-.post-role-intro-sheet .hint{margin:0 0 16px;color:#fff!important}
-.post-role-intro-text{white-space:pre-wrap;text-align:right;font-size:17px;line-height:2.5;color:#fff!important;margin:12px 0 22px}
-#continueToMafiaIntro{width:100%;min-height:54px;background:#000!important;color:#fff!important;border:1px solid #fff!important}
+.tag{background:#050508!important;color:#fff!important;border-color:#ff3030!important}
+hr{border-color:#ff3030!important}
+.post-role-intro{background:#050508!important;color:#fff!important}
+.post-role-intro-sheet{background:#050508!important;border:1px solid #ff3030!important}
 
 /* Bright red framing throughout the game UI */
 body *,body *::before,body *::after{border-color:#ff3030!important;outline-color:#ff3030!important}
+
+/* Saved player shortcuts and dedicated Mafia-intro handoff */
+.saved-player-names{margin:2px 0 14px;text-align:right}
+.saved-player-title{font-size:12px;color:#fff;margin:8px 0}
+.saved-player-options{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+#setup .saved-player-option{width:auto;min-height:38px;padding:7px 13px;border:1px solid #ff3030!important;border-radius:9px;background:#090909!important;color:#fff!important;font-size:13px}
+.mafia-intro-page{position:fixed;inset:0;z-index:10001;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:18px 14px;background:#050505}
+.mafia-intro-card{width:100%;max-width:560px;max-height:calc(100dvh - 36px);overflow-y:auto;padding:24px 18px;border:1px solid #ff3030;border-radius:16px;background:#101010;text-align:center;box-shadow:0 0 28px #ff303022}
+.mafia-intro-instruction{font-size:17px;line-height:2.2;color:#fff;margin:0 0 20px}
+.mafia-intro-card h2{font-size:16px;color:#fff;margin:10px 0}
+.mafia-intro-role-list{margin:12px 0 22px;padding:0 28px 0 0;text-align:right;color:#fff;line-height:2.3}
+.mafia-intro-role-list li{padding:3px 0;border-bottom:1px solid #ff303044}
+.mafia-intro-card button{width:100%;min-height:52px;background:#090909!important;color:#fff!important;border:1px solid #ff3030!important}
 </style><script src="fonts-loader.js?v=4" defer></script>
 </head><body>
 <header><h1>پشت نقاب</h1><p>هر چهره، یک راز</p></header><main>
@@ -273,6 +267,7 @@ body *,body *::before,body *::after{border-color:#ff3030!important;outline-color
  <div class="name-entry-card" id="nameEntryCard">
   <h2 id="nameStepTitle">نام بازیکن اول</h2>
   <input id="singlePlayerName" type="text" autocomplete="off" placeholder="نام بازیکن اول" aria-label="نام بازیکن اول">
+  <div id="savedPlayerNames" class="saved-player-names" aria-label="بازیکنان ذخیره‌شده"></div>
   <div class="actions">
    <button id="confirmPlayerName" type="button">پلیر بعدی</button>
    <button id="confirmRoster" type="button" class="green hidden">پلیرها وارد شدن و شروع بازی</button>
@@ -355,7 +350,7 @@ body *,body *::before,body *::after{border-color:#ff3030!important;outline-color
     <button class="secondary" id="pauseSpeaker">توقف تایمر</button>
     <button class="secondary" id="extendSpeaker">تمدید ۱۵ ثانیه</button>
   </div>
-</div><p class="hint">این پنل شامل اطلاعات محرمانه همه نقش‌هاست؛ فقط گاد باید آن را ببیند.</p><div class="section-head roster-head"><h3>فهرست محرمانه نقش‌ها</h3><button id="toggleRoster" class="secondary roster-toggle" type="button" aria-label="نمایش فهرست نقش‌ها" title="نمایش فهرست نقش‌ها">☰</button></div><div id="secretRoster" class="roster-content hidden"></div><hr><h3>ثبت اقدام شب</h3><label>نوع اقدام</label><select id="actionType"><option value="protect_doctor">نجات پزشک</option><option value="protect_guard">محافظت محافظ</option><option value="jam">اختلال خاموش‌کننده</option><option value="frame">قاب‌سازی</option><option value="investigate">استعلام کارآگاه</option><option value="interrogate">استعلام بازپرس</option><option value="track">ردیابی</option><option value="mafia_attack">حمله مافیا</option><option value="serial_attack">حمله جانی</option><option value="poison">خنثی‌سازی نجات با سم‌ساز</option><option value="shot">شلیک تک‌تیرانداز</option><option value="verify">راستی‌آزمایی متخصص</option><option value="deceive">تغییر ردپای فریبکار</option><option value="personal_bond">انتخاب موکل محافظ شخصی</option><option value="psych">محدودیت زمان روان‌شناس</option><option value="judge">رأی‌گیری مجدد قاضی</option><option value="reporter">گزارش خبرنگار</option></select><div id="actionFields"></div><div class="actions"><button id="applyAction">ثبت و حل اقدام</button><button class="secondary" id="undoAction">برگرداندن آخرین اقدام</button></div><hr><h3>حذف و رأی‌گیری روز</h3><label>بازیکن</label><select id="eliminateTarget"></select><label>علت</label><select id="eliminateReason"><option>رأی‌گیری روز</option><option>شلیک مافیا</option><option>قدرت نقش</option><option>تصمیم گاد</option></select><div class="actions"><button class="danger" id="eliminateBtn">ثبت حذف</button></div><hr><h3>تأیید برد مستقل</h3><p class="hint">برای فرصت‌طلب و محافظ شخصی، شرط برد به توافق سناریو وابسته است. پس از بررسی شرط اختصاصی، گاد می‌تواند برد را دستی تأیید کند.</p><label>بازیکن مستقل</label><select id="independentWinner"></select><div class="actions"><button class="green" id="declareIndependentWin">تأیید برد مستقل</button></div><hr><h3>گزارش رویدادها</h3><div id="eventLog"></div><div class="actions"><button class="secondary" id="exportSave">دانلود پشتیبان بازی</button><button class="secondary" id="closeHost">بستن پنل</button></div></div><div class="actions"><button class="danger" id="endGame">پایان بازی و بازگشت</button></div></section><section id="roleHandoffScreen" class="card hidden role-handoff-screen" aria-live="polite">
+</div><p class="hint">این پنل شامل اطلاعات محرمانه همه نقش‌هاست؛ فقط گاد باید آن را ببیند.</p><div class="section-head roster-head"><h3>فهرست محرمانه نقش‌ها</h3><button id="toggleRoster" class="secondary roster-toggle" type="button" aria-label="نمایش فهرست نقش‌ها" title="نمایش فهرست نقش‌ها">☰</button></div><div id="secretRoster" class="roster-content hidden"></div><hr><h3>ثبت اقدام شب</h3><label>نوع اقدام</label><select id="actionType"><option value="protect_doctor">نجات پزشک</option><option value="protect_guard">محافظت محافظ</option><option value="jam">اختلال خاموش‌کننده</option><option value="frame">قاب‌سازی</option><option value="investigate">استعلام کارآگاه</option><option value="interrogate">استعلام بازپرس</option><option value="track">ردیابی</option><option value="mafia_attack">حمله مافیا</option><option value="poison">خنثی‌سازی نجات با سم‌ساز</option><option value="shot">شلیک تک‌تیرانداز</option><option value="verify">راستی‌آزمایی متخصص</option><option value="psych">محدودیت زمان روان‌شناس</option><option value="judge">رأی‌گیری مجدد قاضی</option><option value="reporter">گزارش خبرنگار</option></select><div id="actionFields"></div><div class="actions"><button id="applyAction">ثبت و حل اقدام</button><button class="secondary" id="undoAction">برگرداندن آخرین اقدام</button></div><hr><h3>حذف و رأی‌گیری روز</h3><label>بازیکن</label><select id="eliminateTarget"></select><label>علت</label><select id="eliminateReason"><option>رأی‌گیری روز</option><option>شلیک مافیا</option><option>قدرت نقش</option><option>تصمیم گاد</option></select><div class="actions"><button class="danger" id="eliminateBtn">ثبت حذف</button></div><hr><h3>گزارش رویدادها</h3><div id="eventLog"></div><div class="actions"><button class="secondary" id="exportSave">دانلود پشتیبان بازی</button><button class="secondary" id="closeHost">بستن پنل</button></div></div><div class="actions"><button class="danger" id="endGame">پایان بازی و بازگشت</button></div></section><section id="roleHandoffScreen" class="card hidden role-handoff-screen" aria-live="polite">
  <div class="role-handoff-heading">نمایش خصوصی نقش‌ها</div>
  <div id="playerList"></div><div id="reveal" class="reveal hidden">
  <div class="role-cinema">
@@ -372,12 +367,20 @@ body *,body *::before,body *::after{border-color:#ff3030!important;outline-color
   <h2>متن آغاز بازی</h2>
   <p class="hint">گاد، متن زیر را برای بازیکنان بخواند.</p>
   <div id="postRoleIntroText" class="post-role-intro-text"></div>
-  <button id="continueToMafiaIntro" type="button">ورود به شب معارفه مافیا</button>
+  <button id="continueToMafiaIntro" type="button">شروع بازی و شب معارفه مافیا</button>
+ </div>
+</section>
+<section id="mafiaIntroPage" class="mafia-intro-page hidden" aria-label="شب معارفه مافیا">
+ <div class="mafia-intro-card">
+  <p class="mafia-intro-instruction">گاد لطفاً اعضای گروه مافیا رو بیدار کن تا همدیگه رو بشناسن. به ترتیب اسم نقش‌هاشون رو بخون تا لایک بدن.</p>
+  <h2>فهرست نقش‌های گروه مافیا</h2>
+  <ol id="mafiaIntroRoleList" class="mafia-intro-role-list"></ol>
+  <button id="startIntroDay" type="button">شروع روز معارفه</button>
  </div>
 </section>
 
 </main><footer>پشت نقاب · دستیار گاد · ذخیره محلی روی همین دستگاه</footer>
-<script src="engine.js?v=14"></script><script src="app.js?v=38"></script>
+<script src="engine.js?v=14"></script><script src="app.js?v=39"></script>
 <script>
 (()=> {
  const game=document.getElementById('game');
