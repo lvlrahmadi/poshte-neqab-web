@@ -227,44 +227,46 @@ body:has(#setup:not(.hidden)) main{min-height:100dvh;display:flex;align-items:fl
 #roleHandoffScreen #playerList{min-height:58vh;display:flex;align-items:center;justify-content:center}
 #roleHandoffScreen .reveal-player-name,#roleHandoffScreen .reveal-next{display:block;width:100%;max-width:460px;min-height:82px;font-size:clamp(23px,6vw,32px);border:1px solid #c49a5c;background:#17121a;color:#fff;box-shadow:0 12px 36px #0009}
 #roleHandoffScreen #reveal:not(.hidden){display:block!important;visibility:visible!important;width:100%;margin:0}
-/* Unified visual foundation: the same artwork remains visible on every screen */
-:root{color-scheme:dark;--bg:#08090e;--panel:rgba(8,9,14,.58);--panel2:rgba(15,13,18,.68);--gold:#fff;--muted:#f2f2f2;--red:#ff3030;--green:#fff;--line:#ff3030}
-html{min-height:100%;background:#08090e}
+/* Independent screen backdrops: never reuse the welcome artwork on other pages */
+:root{color-scheme:dark;--red:#ff3030;--line:#ff3030}
+html{min-height:100%;background:#17131a}
 body{
  min-height:100vh;color:#fff!important;
- background:url('assets/mafia-god-welcome.svg') center 22%/cover fixed no-repeat!important;
+ background:radial-gradient(ellipse at 50% 0%,#4a202b 0%,#211922 42%,#17131a 100%)!important;
 }
 header,footer,main{background:transparent!important}
 body,body *{font-family:'AradLocal',serif!important;color:#fff!important}
-header{text-shadow:0 2px 12px #000}
-.card,.god-dashboard,.name-entry-card,.ticket-window,.player,.role-dropdown,.roster-player,.stat,.log,.reveal,.role-cinema,.intro-sheet,.game-tabs,.game-view,.latest-event,.mafia-intro-card,.post-role-intro-sheet{
- background:rgba(8,9,14,.60)!important;
+
+/* Content surfaces are translucent; they no longer paint opaque black panels */
+.card:not(#welcome),.god-dashboard,.name-entry-card,.ticket-window,.player,.role-dropdown,.roster-player,.stat,.log,.reveal,.intro-sheet,.game-tabs,.game-view,.latest-event,.mafia-intro-card,.post-role-intro-sheet{
+ background:rgba(30,22,29,.30)!important;
  background-image:none!important;
  border-color:#ff3030!important;
- backdrop-filter:blur(2px);
+ box-shadow:none!important;
+ backdrop-filter:blur(1px);
 }
 #welcome.welcome-card{
  background:url('assets/mafia-god-welcome.svg') center 35%/cover no-repeat!important;
  border:1px solid #ff3030!important;
 }
-#welcome .welcome-masks,.role-cinema-image,.role-cinema-orbit{display:block!important}
+#setup #nameEntryCard{background:rgba(49,24,34,.24)!important}
+#game{background:transparent!important}
+#roleHandoffScreen{background:radial-gradient(ellipse at 50% 25%,rgba(104,35,49,.34),rgba(27,20,29,.22))!important}
+.intro-page{background:radial-gradient(ellipse at 50% 15%,rgba(100,36,48,.38),rgba(25,19,27,.24))!important}
+.post-role-intro{background:radial-gradient(ellipse at 50% 15%,rgba(93,34,46,.40),rgba(24,19,27,.24))!important}
+.mafia-intro-page{background:radial-gradient(ellipse at 50% 15%,rgba(111,31,45,.42),rgba(22,17,24,.24))!important}
 #welcome .welcome-brand span,#welcome .welcome-brand strong{-webkit-text-fill-color:#fff!important;background:none!important;color:#fff!important}
 button,button.secondary,button.danger,button.green,.role-ack,.game-tabs button,.game-tabs button.active,#continueToMafiaIntro{
- background:rgba(8,9,14,.78)!important;color:#fff!important;border:1px solid #ff3030!important;
+ background:rgba(30,20,27,.55)!important;color:#fff!important;border:1px solid #ff3030!important;
  box-shadow:0 0 14px rgba(255,48,48,.12)!important
 }
-input,select,textarea,.count-display{background:rgba(8,9,14,.78)!important;color:#fff!important;border:1px solid #ff3030!important}
+input,select,textarea,.count-display{background:rgba(30,20,27,.48)!important;color:#fff!important;border:1px solid #ff3030!important}
 input::placeholder,textarea::placeholder{color:#eee!important}
-.tag{background:rgba(8,9,14,.68)!important;color:#fff!important;border-color:#ff3030!important}
+.tag{background:rgba(30,20,27,.38)!important;color:#fff!important;border-color:#ff3030!important}
 hr{border-color:#ff3030!important}
-.intro-page,.post-role-intro,.mafia-intro-page{
- background:rgba(8,9,14,.30)!important;
- background-image:url('assets/mafia-god-welcome.svg')!important;
- background-position:center 22%!important;background-size:cover!important;background-attachment:fixed!important;
-}
-.intro-sheet,.post-role-intro-sheet,.mafia-intro-card{background:rgba(8,9,14,.62)!important}
+.intro-sheet,.post-role-intro-sheet,.mafia-intro-card{background:rgba(35,22,30,.32)!important}
 body *,body *::before,body *::after{border-color:#ff3030!important;outline-color:#ff3030!important}
-@media(max-width:560px){body{background-attachment:scroll!important}.intro-page,.post-role-intro,.mafia-intro-page{background-attachment:scroll!important}}
+@media(max-width:560px){body{background-attachment:scroll!important}}
 
 /* Saved player shortcuts and dedicated Mafia-intro handoff */
 .saved-player-names{margin:2px 0 14px;text-align:right}
