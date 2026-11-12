@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000"><meta name="description" content="پشت نقاب؛ مدیریت هوشمند بازی مافیا">
-<link rel="manifest" href="manifest.webmanifest?v=73"><link rel="icon" href="icon.svg?v=14">
+<link rel="manifest" href="manifest.webmanifest?v=74"><link rel="icon" href="icon.svg?v=14">
 <title>پشت نقاب</title>
 <style>
 :root{color-scheme:dark;--bg:#101116;--panel:#1b1d25;--panel2:#242630;--gold:#d7b36a;--muted:#aaaab4;--red:#a84650;--green:#52856b;--line:#393a43}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#302a31 0,#101116 52%);color:#f4f0e8;font-family:'AradLocal',serif;min-height:100vh}header{text-align:center;padding:24px 16px 10px}header h1{margin:0;color:var(--gold);font-size:29px;font-family:'AradLocal','AradLocal',serif;line-height:1.8}header p{margin:7px 0;color:var(--muted);font-size:13px}.welcome-card{text-align:center;padding:26px 20px}.welcome-mark{width:76px;height:76px;margin:2px auto 14px;border:1px solid #8d7448;border-radius:24px;display:grid;place-items:center;background:radial-gradient(circle at 35% 25%,#514038,#211b20);font-size:38px;box-shadow:0 10px 30px #0006}.welcome-card h2{font-size:25px;margin:8px 0 10px}.welcome-card .welcome-lead{font-size:14px;line-height:2;color:#e6dfd2;margin:0 auto 16px;max-width:440px}.welcome-card .welcome-note{font-size:12px;line-height:1.9;color:var(--muted);margin:14px auto 0;max-width:420px}.welcome-card button{width:100%;max-width:360px;padding:14px;font-size:15px}.god-dashboard{border-color:#75603d;background:linear-gradient(145deg,#29252a,#191a21)}.god-dashboard-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.god-dashboard-head h2{margin:0}.god-quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.god-quick-grid button{min-height:58px;padding:12px 9px;font-size:13px;line-height:1.6}.god-quick-grid .wide{grid-column:1/-1}.god-dashboard-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.god-dashboard-stats .stat{border:1px solid #393a43}.god-dashboard .latest-event{font-size:12px;line-height:1.9;color:#d8d0c2;background:#111319;border-radius:10px;padding:10px;margin-top:10px}.god-dashboard .latest-event strong{color:var(--gold)}@media(min-width:560px){.god-quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.god-quick-grid .wide{grid-column:auto}.god-dashboard-stats{grid-template-columns:repeat(4,minmax(0,1fr))}}main{max-width:780px;margin:auto;padding:8px 14px 48px}.card{background:linear-gradient(145deg,#20222b,#181a21);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 12px 30px #0005}h2{font-size:18px;color:var(--gold);margin:0 0 14px}h3{font-size:15px;margin:12px 0 8px;color:#e8d7b2}label{display:block;font-size:13px;color:#d4d0c8;margin:12px 0 6px}input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #484953;background:#101116;color:#fff;font:inherit}button{border:0;border-radius:11px;padding:11px 14px;background:var(--gold);color:#17130c;font:inherit;font-weight:bold;cursor:pointer}button.secondary{background:#383a45;color:#fff}button.danger{background:#843943;color:#fff}button.green{background:#396b52;color:#fff}button:disabled{opacity:.4;cursor:not-allowed}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.count-display{width:100%;min-height:44px;padding:12px;border-radius:10px;border:1px solid #484953;background:#101116;color:var(--gold);font:inherit;font-weight:bold}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.hint{font-size:12px;color:var(--muted);line-height:1.9}.tiny{font-size:11px;color:var(--muted)}.hidden{display:none!important}.player{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#111319;padding:10px 11px;border-radius:11px;margin:7px 0}.player.dead{opacity:.48}.role-dropdown{background:#111319;border:1px solid var(--line);border-radius:11px;margin:7px 0;overflow:hidden}.role-dropdown summary{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px;cursor:pointer;list-style:none}.role-dropdown summary::-webkit-details-marker{display:none}.role-dropdown summary:after{content:'＋';color:var(--gold);font-weight:bold}.role-dropdown[open] summary:after{content:'−'}.role-dropdown-content{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 12px 12px}.role-dropdown-content strong{color:var(--gold)}.role-dropdown-content .hint{width:100%;margin:4px 0 0}.roster-head{margin:12px 0 8px}.roster-toggle{flex:0 0 44px;width:44px;height:42px;padding:0;font-size:21px;line-height:1}.roster-content{padding:0 2px 8px}.roster-player{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;background:#111319;border:1px solid var(--line);border-radius:10px;margin:7px 0;padding:10px 12px}.roster-player.dead{opacity:.5}.roster-player .roster-role{color:var(--gold);font-weight:bold}.roster-player .roster-hint{grid-column:1/-1;margin:0}.tag{font-size:11px;border:1px solid #6a5c3d;color:var(--gold);border-radius:30px;padding:4px 8px;white-space:nowrap}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1}.section-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.reveal{border:1px solid var(--gold);border-radius:16px;padding:24px;text-align:center;background:radial-gradient(circle,#38303a,#14151b);margin-top:12px}.reveal strong{display:block;color:var(--gold);font-size:25px;margin:12px}hr{border:0;border-top:1px solid var(--line);margin:15px 0}.log{background:#111319;padding:9px 11px;border-radius:9px;margin:6px 0;font-size:12px;line-height:1.8}.status{color:#9bd1ad}.warning{color:#e7a0a0}.stat{background:#111319;border-radius:10px;padding:10px}.stat b{display:block;color:var(--gold);font-size:20px;margin-top:4px} .nastaliq{font-family:'AradLocal','AradLocal',serif;line-height:2}
@@ -227,39 +227,59 @@ body:has(#setup:not(.hidden)) main{min-height:100dvh;display:flex;align-items:fl
 #roleHandoffScreen #playerList{min-height:58vh;display:flex;align-items:center;justify-content:center}
 #roleHandoffScreen .reveal-player-name,#roleHandoffScreen .reveal-next{display:block;width:100%;max-width:460px;min-height:82px;font-size:clamp(23px,6vw,32px);border:1px solid #c49a5c;background:#17121a;color:#fff;box-shadow:0 12px 36px #0009}
 #roleHandoffScreen #reveal:not(.hidden){display:block!important;visibility:visible!important;width:100%;margin:0}
-/* Final visual foundation: real local artwork, white typography and bright-red frames */
-:root{color-scheme:dark;--bg:#050508;--panel:#08090d;--panel2:#111116;--gold:#fff;--muted:#fff;--red:#ff3030;--green:#fff;--line:#ff3030}
-html,body{background:#050508!important;color:#fff!important}
-body,body *{font-family:'AradLocal',serif!important;color:#fff!important;text-shadow:none!important}
-body{background:linear-gradient(180deg,rgba(0,0,0,.66),rgba(0,0,0,.9)),url('assets/mafia-god-welcome.svg') center top/cover fixed no-repeat!important}
+/* Independent screen backdrops: never reuse the welcome artwork on other pages */
+:root{color-scheme:dark;--red:#ff3030;--line:#ff3030}
+html{min-height:100%;background:#17131a}
+body{
+ min-height:100vh;color:#fff!important;
+ background:radial-gradient(ellipse at 50% 0%,#4a202b 0%,#211922 42%,#17131a 100%)!important;
+}
 header,footer,main{background:transparent!important}
-.card,.god-dashboard,.name-entry-card,.ticket-window,.player,.role-dropdown,.roster-player,.stat,.log,.reveal,.role-cinema,.intro-page,.intro-sheet,.game-tabs,.game-view,.latest-event{background:linear-gradient(145deg,rgba(16,16,21,.96),rgba(0,0,0,.94))!important;background-image:linear-gradient(145deg,rgba(16,16,21,.96),rgba(0,0,0,.94))!important;border-color:#ff3030!important}
-#welcome.welcome-card{background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.78)),url('assets/mafia-god-welcome.svg') center 38%/cover no-repeat!important;border:1px solid #ff3030!important}
-#welcome .welcome-masks,.role-cinema-image,.role-cinema-orbit{display:block!important}
-#welcome .welcome-brand span,#welcome .welcome-brand strong{-webkit-text-fill-color:#fff!important;background:none!important;color:#fff!important}
-button,button.secondary,button.danger,button.green,.role-ack,.game-tabs button,.game-tabs button.active,#continueToMafiaIntro{background:#050508!important;color:#fff!important;border:1px solid #ff3030!important;box-shadow:0 0 14px rgba(255,48,48,.12)!important}
-input,select,textarea,.count-display{background:#050508!important;color:#fff!important;border:1px solid #ff3030!important}
-input::placeholder,textarea::placeholder{color:#fff!important}
-.tag{background:#050508!important;color:#fff!important;border-color:#ff3030!important}
-hr{border-color:#ff3030!important}
-.post-role-intro{background:#050508!important;color:#fff!important}
-.post-role-intro-sheet{background:#050508!important;border:1px solid #ff3030!important}
+body,body *{font-family:'AradLocal',serif!important;color:#fff!important}
 
-/* Bright red framing throughout the game UI */
+/* Content surfaces are translucent; they no longer paint opaque black panels */
+.card:not(#welcome),.god-dashboard,.name-entry-card,.ticket-window,.player,.role-dropdown,.roster-player,.stat,.log,.reveal,.intro-sheet,.game-tabs,.game-view,.latest-event,.mafia-intro-card,.post-role-intro-sheet{
+ background:rgba(30,22,29,.30)!important;
+ background-image:none!important;
+ border-color:#ff3030!important;
+ box-shadow:none!important;
+ backdrop-filter:blur(1px);
+}
+#welcome.welcome-card{
+ background:url('assets/mafia-god-welcome.svg') center 35%/cover no-repeat!important;
+ border:1px solid #ff3030!important;
+}
+#setup #nameEntryCard{background:rgba(49,24,34,.24)!important}
+#game{background:transparent!important}
+#roleHandoffScreen{background:radial-gradient(ellipse at 50% 25%,rgba(104,35,49,.34),rgba(27,20,29,.22))!important}
+.intro-page{background:radial-gradient(ellipse at 50% 15%,rgba(100,36,48,.38),rgba(25,19,27,.24))!important}
+.post-role-intro{background:radial-gradient(ellipse at 50% 15%,rgba(93,34,46,.40),rgba(24,19,27,.24))!important}
+.mafia-intro-page{background:radial-gradient(ellipse at 50% 15%,rgba(111,31,45,.42),rgba(22,17,24,.24))!important}
+#welcome .welcome-brand span,#welcome .welcome-brand strong{-webkit-text-fill-color:#fff!important;background:none!important;color:#fff!important}
+button,button.secondary,button.danger,button.green,.role-ack,.game-tabs button,.game-tabs button.active,#continueToMafiaIntro{
+ background:rgba(30,20,27,.55)!important;color:#fff!important;border:1px solid #ff3030!important;
+ box-shadow:0 0 14px rgba(255,48,48,.12)!important
+}
+input,select,textarea,.count-display{background:rgba(30,20,27,.48)!important;color:#fff!important;border:1px solid #ff3030!important}
+input::placeholder,textarea::placeholder{color:#eee!important}
+.tag{background:rgba(30,20,27,.38)!important;color:#fff!important;border-color:#ff3030!important}
+hr{border-color:#ff3030!important}
+.intro-sheet,.post-role-intro-sheet,.mafia-intro-card{background:rgba(35,22,30,.32)!important}
 body *,body *::before,body *::after{border-color:#ff3030!important;outline-color:#ff3030!important}
+@media(max-width:560px){body{background-attachment:scroll!important}}
 
 /* Saved player shortcuts and dedicated Mafia-intro handoff */
 .saved-player-names{margin:2px 0 14px;text-align:right}
 .saved-player-title{font-size:12px;color:#fff;margin:8px 0}
 .saved-player-options{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
 #setup .saved-player-option{width:auto;min-height:38px;padding:7px 13px;border:1px solid #ff3030!important;border-radius:9px;background:#090909!important;color:#fff!important;font-size:13px}
-.mafia-intro-page{position:fixed;inset:0;z-index:10001;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:18px 14px;background:#050505}
-.mafia-intro-card{width:100%;max-width:560px;max-height:calc(100dvh - 36px);overflow-y:auto;padding:24px 18px;border:1px solid #ff3030;border-radius:16px;background:#101010;text-align:center;box-shadow:0 0 28px #ff303022}
+.mafia-intro-page{position:fixed;inset:0;z-index:10001;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:18px 14px;background:rgba(8,9,14,.3)}
+.mafia-intro-card{width:100%;max-width:560px;max-height:calc(100dvh - 36px);overflow-y:auto;padding:24px 18px;border:1px solid #ff3030;border-radius:16px;background:rgba(8,9,14,.62);text-align:center;box-shadow:0 0 28px #ff303022}
 .mafia-intro-instruction{font-size:17px;line-height:2.2;color:#fff;margin:0 0 20px}
 .mafia-intro-card h2{font-size:16px;color:#fff;margin:10px 0}
 .mafia-intro-role-list{margin:12px 0 22px;padding:0 28px 0 0;text-align:right;color:#fff;line-height:2.3}
 .mafia-intro-role-list li{padding:3px 0;border-bottom:1px solid #ff303044}
-.mafia-intro-card button{width:100%;min-height:52px;background:#090909!important;color:#fff!important;border:1px solid #ff3030!important}
+.mafia-intro-card button{width:100%;min-height:52px;background:rgba(8,9,14,.78)!important;color:#fff!important;border:1px solid #ff3030!important}
 
 /* Visibility fix: let the existing cinematic artwork read clearly on every screen */
 body{
@@ -462,4 +482,4 @@ body{
  });
 })();
 </script>
-<script>if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=73',{updateViaCache:'none'}).then(reg=>reg.update()).catch(()=>{}));</script></body></html>
+<script>if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=74',{updateViaCache:'none'}).then(reg=>reg.update()).catch(()=>{}));</script></body></html>
