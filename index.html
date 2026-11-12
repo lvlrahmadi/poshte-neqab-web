@@ -233,15 +233,31 @@ body:has(#setup:not(.hidden)) main{min-height:100dvh;display:flex;align-items:ce
 #game.role-handoff-mode #nextPhase,
 #game.role-handoff-mode #hostButton{display:none!important;visibility:hidden!important}
 
-#game.role-handoff-mode{min-height:72vh;display:flex;flex-direction:column;justify-content:center;align-items:stretch}
-#game.role-handoff-mode>:not(#playerList):not(#reveal){display:none!important}
-#game.role-handoff-mode #playerList.reveal-flow{display:flex;flex:1;min-height:58vh;align-items:center;justify-content:center;margin:0;padding:18px}
-#game.role-handoff-mode #playerList .reveal-player-name,#game.role-handoff-mode #playerList .reveal-next{display:block;width:100%;max-width:460px;min-height:82px;font-size:clamp(23px,6vw,32px);border:1px solid #c49a5c;background:linear-gradient(145deg,#3b2228,#151219);color:#f5e7cb;box-shadow:0 12px 36px #0009}
-#game.role-handoff-mode #reveal:not(.hidden){display:block!important;width:100%;margin:0}
-#game.role-handoff-mode #reveal.hidden{display:none!important}
+#game.role-handoff-mode{min-height:72vh;display:block!important}
+#game.role-handoff-mode>*{display:none!important}
+#game.role-handoff-mode>#playerList.reveal-flow{display:flex!important;visibility:visible!important;position:relative;width:100%;min-height:58vh;align-items:center;justify-content:center;margin:0;padding:18px}
+#game.role-handoff-mode>#playerList.reveal-flow .reveal-player-name,#game.role-handoff-mode>#playerList.reveal-flow .reveal-next{display:block!important;visibility:visible!important;width:100%;max-width:460px;min-height:82px;font-size:clamp(23px,6vw,32px);border:1px solid #c49a5c;background:#17121a;color:#fff;box-shadow:0 12px 36px #0009}
+#game.role-handoff-mode>#reveal:not(.hidden){display:block!important;visibility:visible!important;width:100%;margin:0}
+#game.role-handoff-mode>#reveal.hidden{display:none!important}
 </style><script src="fonts-loader.js?v=2" defer></script>
 </head><body>
 <header><h1>پشت نقاب</h1><p>هر چهره، یک راز</p></header><main>
+<section class="card hidden" id="setup">
+ <div class="name-entry-card" id="nameEntryCard">
+  <h2 id="nameStepTitle">نام بازیکن اول</h2>
+  <input id="singlePlayerName" type="text" autocomplete="off" placeholder="نام بازیکن اول" aria-label="نام بازیکن اول">
+  <div class="actions">
+   <button id="confirmPlayerName" type="button">پلیر بعدی</button>
+   <button id="confirmRoster" type="button" class="green hidden">پلیرها وارد شدن و شروع بازی</button>
+  </div>
+  <p class="hint" id="nameStepHint"></p>
+ </div>
+ <textarea id="names" class="hidden" aria-hidden="true"></textarea>
+ <button id="makeGame" class="hidden" type="button">ساخت بازی</button>
+ <button class="secondary hidden" id="restoreBtn" type="button">بازیابی پشتیبان</button>
+ <button class="secondary hidden" id="clearSaved" type="button">پاک کردن ذخیره</button>
+ <input id="restoreFile" type="file" accept="application/json" class="hidden">
+</section>
 <section class="card welcome-card" id="welcome">
  <div class="welcome-kicker">THE NIGHT • THE GAME • THE SECRET</div>
  <div class="welcome-masks" aria-label="دو نقاب طلایی؛ یکی خندان و دیگری خشمگین">
@@ -267,22 +283,7 @@ body:has(#setup:not(.hidden)) main{min-height:100dvh;display:flex;align-items:ce
  <button id="enterGodDesk">شروع بازی</button>
  <p class="welcome-note">نقش‌ها، شب و روز و اتفاقات بازی؛ همه زیر نظر تو.</p>
 </section>
-<section class="card hidden" id="setup">
- <div class="name-entry-card" id="nameEntryCard">
-  <h2 id="nameStepTitle">نام بازیکن اول</h2>
-  <input id="singlePlayerName" type="text" autocomplete="off" placeholder="نام بازیکن اول" aria-label="نام بازیکن اول">
-  <div class="actions">
-   <button id="confirmPlayerName" type="button">پلیر بعدی</button>
-   <button id="confirmRoster" type="button" class="green hidden">پلیرها وارد شدن و شروع بازی</button>
-  </div>
-  <p class="hint" id="nameStepHint"></p>
- </div>
- <textarea id="names" class="hidden" aria-hidden="true"></textarea>
- <button id="makeGame" class="hidden" type="button">ساخت بازی</button>
- <button class="secondary hidden" id="restoreBtn" type="button">بازیابی پشتیبان</button>
- <button class="secondary hidden" id="clearSaved" type="button">پاک کردن ذخیره</button>
- <input id="restoreFile" type="file" accept="application/json" class="hidden">
-</section>
+
 <section class="card hidden" id="game"><div class="section-head"><h2>میز بازی</h2><span class="tag" id="roundLabel">شب ۱</span></div><div class="row"><div class="stat"><span class="tiny">فاز</span><b id="phaseName">شب</b></div><div class="stat"><span class="tiny">بازیکنان زنده</span><b id="aliveCount">۰</b></div><div class="stat"><span class="tiny">وضعیت</span><b id="winStatus">در جریان</b></div></div>
 <section class="card god-dashboard" id="godDashboard" aria-label="داشبورد گاد">
  <div class="god-dashboard-head"><h2>میز فرمان گاد</h2><span class="tag">دسترسی سریع</span></div>
