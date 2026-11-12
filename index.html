@@ -79,6 +79,31 @@
 #welcome .welcome-lead,#welcome .welcome-note{position:relative;z-index:1;color:#f1e9dc;text-shadow:0 2px 8px #000;max-width:460px}
 #welcome button{position:relative;z-index:1;background:linear-gradient(135deg,#e1c17c,#a77a38);color:#17110b;box-shadow:0 8px 26px #0009;border:1px solid #f4d99b}
 @media(max-width:560px){#welcome.welcome-card{min-height:calc(100dvh - 112px);padding:30px 18px 24px;background-position:center 35%}#welcome .welcome-note{font-size:11px}}
+
+/* Unified cinematic theme across every existing game screen */
+:root{--bg:#08090e;--panel:#17151b;--panel2:#211b22;--gold:#d8b36b;--red:#9f2937;--line:#6e51334d}
+body{background:radial-gradient(ellipse at 50% 0%,#49232b88 0%,transparent 42%),linear-gradient(180deg,#090a10ed,#111017f5),url('assets/mafia-god-welcome.svg') center top/cover fixed no-repeat;color:#f5eee2}
+header{position:relative;text-shadow:0 3px 16px #000}
+header h1{font-size:clamp(26px,6vw,34px);letter-spacing:1px;text-shadow:0 2px 18px #c18b4555}
+main{position:relative;isolation:isolate}
+.card{background:linear-gradient(145deg,rgba(37,30,35,.96),rgba(15,16,23,.97));border:1px solid #b58a4d66;box-shadow:0 14px 38px #0009,inset 0 1px #f4d99b0b;backdrop-filter:blur(7px)}
+.card h2,.card h3{color:#e4c27f;text-shadow:0 2px 12px #c08a4433}
+input,select,textarea,.count-display{background:rgba(8,9,14,.9);border-color:#80633f88;box-shadow:inset 0 2px 8px #0008}
+input:focus,select:focus,textarea:focus{outline:1px solid #d7b36a;box-shadow:0 0 0 3px #d7b36a22}
+button{background:linear-gradient(135deg,#f0d69b,#b88743 65%,#8c612e);border:1px solid #f3dba5;color:#17110b;box-shadow:0 5px 16px #0007;transition:transform .16s ease,filter .16s ease}
+button:active{transform:translateY(1px) scale(.99);filter:brightness(1.08)}
+button.secondary{background:linear-gradient(135deg,#39313a,#211d25);border:1px solid #9b794c88;color:#f2e6d1}
+button.danger{background:linear-gradient(135deg,#a83c49,#541923);border:1px solid #d46c70;color:#fff}
+button.green{background:linear-gradient(135deg,#527d63,#284b3b);border:1px solid #8ab39a;color:#fff}
+.stat,.player,.log,.latest-event,.name-review-row,.role-dropdown{background:linear-gradient(145deg,#1c1a22,#101117);border:1px solid #80633f55;box-shadow:0 5px 16px #0005}
+.tag{background:#211a1bd9;border-color:#bd965c;color:#e9ca8c}
+.reveal,.intro-sheet{background:radial-gradient(ellipse at 50% 0%,#54232b,#201820 48%,#0c0d12);border-color:#bd965c;box-shadow:0 18px 48px #000b}
+.role-cinema{background:radial-gradient(ellipse at 50% 28%,#702b34 0,#261820 42%,#090a0f 82%);border-color:#c49a5c;box-shadow:0 18px 48px #000c,0 0 28px #8f263333}
+.game-tabs button{border:1px solid #8b704b88!important}
+.game-tabs button.active{box-shadow:0 0 18px #d7b36a55}
+hr{border-color:#a17b4b55}
+@media(max-width:560px){body{background-attachment:scroll}.card{border-radius:16px}.card:not(#welcome){box-shadow:0 10px 28px #0009}}
+
 </style></head><body>
 <header><h1>پشت نقاب</h1><p>هر چهره، یک راز</p></header><main>
 <section class="card welcome-card" id="welcome"><div class="welcome-logo" aria-label="MAFIA GOD"><span>MAFIA</span><strong>GOD</strong></div><p class="tag">دستیار هوشمند بازی مافیا</p><h2>خوش اومدی گاد!</h2><p class="welcome-lead">پشت نقاب آماده‌ست تا کنار تو بازی رو مدیریت کنه؛ از پخش نقش‌ها تا مدیریت شب، روز و اتفاق‌های حساس بازی.</p><button id="enterGodDesk">ورود به میز گاد</button><p class="welcome-note">اینجا همه‌چیز برای تمرکز گاد روی تصمیم‌ها آماده می‌شه؛ مدیریت جزئیات رو بسپار به پشت نقاب.</p></section>
