@@ -1,4 +1,4 @@
-const CACHE='poshte-neghab-v33-god-dashboard';
+const CACHE='poshte-neghab-v34-capo-suspect-vote';
 const FILES=['./','./index.html','./app.js','./engine.js','./manifest.webmanifest','./icon.svg?v=13','./icon-192.png','./icon-512.png','./assets/roles/detective.svg','./assets/roles/doctor.svg','./assets/roles/guard.svg','./assets/roles/interrogator.svg','./assets/roles/tracker.svg','./assets/roles/psychologist.svg','./assets/roles/judge.svg','./assets/roles/reporter.svg','./assets/roles/sniper.svg','./assets/roles/specialist.svg','./assets/roles/godfather.svg','./assets/roles/framer.svg','./assets/roles/poisoner.svg','./assets/roles/silencer.svg','./assets/roles/infiltrator.svg','./assets/roles/underboss.svg','./assets/roles/serial-killer.svg','./assets/roles/deceiver.svg','./assets/roles/opportunist.svg','./assets/roles/bodyguard.svg'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting()));
