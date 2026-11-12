@@ -214,6 +214,18 @@ hr,.divider{border-color:#701818!important}
 :root body, :root body * , :root body *::placeholder{
  color:#fff!important;
 }
+
+/* Minimal player-by-player setup screen */
+body:has(#setup:not(.hidden)) header{display:none!important}
+body:has(#setup:not(.hidden)) main{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:18px!important}
+#setup:not(.hidden){display:block!important;width:100%;max-width:520px;margin:0 auto!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+#setup #nameEntryCard{width:100%;margin:0;padding:24px 18px;background:#000!important;border:1px solid #fff!important;border-radius:16px;text-align:center}
+#setup #nameStepTitle{margin:0 0 22px;color:#fff!important;font-size:23px}
+#setup #singlePlayerName{width:100%;min-height:54px;margin:0 0 16px;background:#000!important;color:#fff!important;border:1px solid #fff!important;text-align:center;font-size:18px}
+#setup #singlePlayerName::placeholder{color:#fff!important;opacity:.75}
+#setup .actions{display:flex;flex-direction:column;gap:10px;margin:0}
+#setup .actions button{width:100%;min-height:52px;background:#000!important;color:#fff!important;border:1px solid #fff!important}
+#setup #nameStepHint{margin:14px 0 0;color:#fff!important}
 </style><script src="fonts-loader.js?v=2" defer></script>
 </head><body>
 <header><h1>پشت نقاب</h1><p>هر چهره، یک راز</p></header><main>
@@ -242,36 +254,22 @@ hr,.divider{border-color:#701818!important}
  <button id="enterGodDesk">ورود به سالن فرماندهی</button>
  <p class="welcome-note">نقش‌ها، شب و روز و اتفاقات بازی؛ همه زیر نظر تو.</p>
 </section>
-<section class="card hidden" id="setup"><h2>ساخت بازی جدید</h2><label>ثبت مرحله‌ای بازیکنان</label>
-<div class="name-entry-card cinema-booth" id="nameEntryCard">
- <div class="booth-marquee"><span class="booth-light"></span><span>گیشه ثبت بازیکنان</span><span class="booth-light"></span></div>
- <div class="booth-scene">
-  <svg class="booth-clerk" viewBox="0 0 160 180" role="img" aria-label="مرد متصدی گیشه با کت‌وشلوار و کلاه، در حال تحویل بلیت">
-   <defs><linearGradient id="clerkSuit" x2="0" y2="1"><stop stop-color="#383039"/><stop offset="1" stop-color="#100f15"/></linearGradient><linearGradient id="clerkSkin" x2="0" y2="1"><stop stop-color="#e5b88e"/><stop offset="1" stop-color="#9d6549"/></linearGradient></defs>
-   <path d="M18 178 Q20 105 80 101 Q140 105 142 178Z" fill="url(#clerkSuit)" stroke="#c49a5c" stroke-width="2"/>
-   <path d="M58 102 L80 137 L102 102 L94 178 H66Z" fill="#e7dfd2"/>
-   <path d="M75 126 L80 139 L86 126 L92 178 H68Z" fill="#9b2635"/>
-   <path d="M55 49 Q53 22 80 20 Q108 22 105 53 L99 91 Q80 112 61 91Z" fill="url(#clerkSkin)"/>
-   <path d="M53 65 Q57 85 68 91 Q80 98 92 91 Q103 85 107 65 L103 88 Q95 105 80 107 Q64 105 57 88Z" fill="#33201d"/>
-   <path d="M52 49 Q50 19 79 17 Q110 19 108 51 L99 43 Q82 35 62 44Z" fill="#17131a"/>
-   <path d="M42 43 Q80 22 118 43 L111 52 Q80 42 49 53Z" fill="#211820" stroke="#d4ad6b" stroke-width="2"/>
-   <path d="M63 59h12 M86 59h12" stroke="#24171a" stroke-width="4" stroke-linecap="round"/>
-   <path d="M74 78 Q80 83 86 78" fill="none" stroke="#6d302b" stroke-width="2.5" stroke-linecap="round"/>
-   <path d="M108 112 L139 137 L130 157 L103 132Z" fill="#bd8b51" stroke="#f1d69b" stroke-width="2"/>
-   <path d="M113 121l19 15 M109 128l19 15" stroke="#5b3922" stroke-width="2"/>
-   <path d="M16 177H145" stroke="#d8b36b" stroke-width="3"/>
-  </svg>  <div class="booth-copy"><strong>سلام گاد!</strong><span>اسامی بازیکنان رو یکی‌یکی تحویل می‌گیرم.</span><small>بلیت ورود به بازی فقط با ثبت نام صادر می‌شه.</small></div>
+<section class="card hidden" id="setup">
+ <div class="name-entry-card" id="nameEntryCard">
+  <h2 id="nameStepTitle">نام بازیکن اول</h2>
+  <input id="singlePlayerName" type="text" autocomplete="off" placeholder="نام بازیکن اول" aria-label="نام بازیکن اول">
+  <div class="actions">
+   <button id="confirmPlayerName" type="button">پلیر بعدی</button>
+   <button id="confirmRoster" type="button" class="green hidden">پلیرها وارد شدن و شروع بازی</button>
+  </div>
+  <p class="hint" id="nameStepHint"></p>
  </div>
- <div class="ticket-window">
-  <div class="ticket-label">نام بازیکن بعدی</div>
-  <p class="hint" id="nameStepHint">نام بازیکن اول را وارد کن؛ پس از تأیید، سراغ نفر بعدی می‌رویم.</p>
-  <input id="singlePlayerName" type="text" autocomplete="off" placeholder="نام بازیکن اول">
-  <div class="actions"><button id="confirmPlayerName" type="button">ثبت نام و صدور بلیت</button><button id="finishNameEntry" type="button" class="secondary hidden">پایان ثبت اسامی</button></div>
- </div>
- <div id="nameReview" class="name-review hidden"></div>
- <div class="actions"><button id="confirmRoster" type="button" class="green hidden">تأیید نهایی فهرست و شروع بازی</button></div>
-</div>
-<textarea id="names" class="hidden" aria-hidden="true"></textarea><p class="hint">برای ۸ تا ۳۰ نفر. حداقل ۸ و حداکثر ۳۰ بازیکن می‌توانند وارد بازی شوند؛ نقش‌ها متناسب با تعداد بازیکنان از بانک تیم مربوط انتخاب می‌شوند.</p><div class="actions"><button id="makeGame" class="hidden" type="button">ساخت بازی</button><button class="secondary" id="restoreBtn">بازیابی پشتیبان</button><button class="secondary" id="clearSaved">پاک کردن ذخیره</button></div><input id="restoreFile" type="file" accept="application/json" class="hidden"></section>
+ <textarea id="names" class="hidden" aria-hidden="true"></textarea>
+ <button id="makeGame" class="hidden" type="button">ساخت بازی</button>
+ <button class="secondary hidden" id="restoreBtn" type="button">بازیابی پشتیبان</button>
+ <button class="secondary hidden" id="clearSaved" type="button">پاک کردن ذخیره</button>
+ <input id="restoreFile" type="file" accept="application/json" class="hidden">
+</section>
 <section class="card hidden" id="game"><div class="section-head"><h2>میز بازی</h2><span class="tag" id="roundLabel">شب ۱</span></div><div class="row"><div class="stat"><span class="tiny">فاز</span><b id="phaseName">شب</b></div><div class="stat"><span class="tiny">بازیکنان زنده</span><b id="aliveCount">۰</b></div><div class="stat"><span class="tiny">وضعیت</span><b id="winStatus">در جریان</b></div></div>
 <section class="card god-dashboard" id="godDashboard" aria-label="داشبورد گاد">
  <div class="god-dashboard-head"><h2>میز فرمان گاد</h2><span class="tag">دسترسی سریع</span></div>
