@@ -121,7 +121,7 @@ function advanceSpeakerTurn(reason){
  speechRemaining=next?speechDuration(next):0;
  renderDayTurns();
  if(next)startSpeakerTurn();
- else { $('nextSpeakerHint').textContent='نوبت صحبت همه بازیکنان تمام شده است.'; if(game.round===1&&game.introCapo?.active&&game.introCapo.stage==='speech'){game.introCapo.stage='vote';log('صحبت‌های روز معارفه تمام شد؛ رأی‌گیری تیر کاپو آغاز می‌شود.');renderIntroCapo();} }
+ else { $('nextSpeakerHint').textContent='نوبت صحبت همه بازیکنان تمام شده است.'; if(game.round===1&&game.introCapo?.active&&game.introCapo.stage==='speech'){game.introCapo.stage='vote';log('صحبت‌های روز معارفه تمام شد؛ رأی‌گیری تیر کاپو آغاز می‌شود.');renderDayTurns();renderIntroCapo();} }
  if(reason==='violation'&&next)$('nextSpeakerHint').textContent='به‌دلیل تخلف، نوبت قبلی گرفته شد؛ اکنون '+next.name+' صحبت می‌کند.';
  else if(reason==='next'&&next)$('nextSpeakerHint').textContent='نوبت قبلی پایان یافت؛ اکنون '+next.name+' صحبت می‌کند.';
 }
