@@ -153,8 +153,8 @@ function alive(){return game.players.filter(p=>p.alive);}
 function log(message){game.logs.unshift({at:new Date().toISOString(),phase:game.phase,round:game.round,message});save();renderLog();renderGodDashboard();}
 function save(){if(game)localStorage.setItem('poshteNeghabV5',JSON.stringify(game));}
 let stagedNames=[];
-function enteredNames(){return $('names').value.split(/[\r\n,،;；\t]+/).map(x=>x.trim().replace(/^\d+[.)、-]\s*/,'' )).filter(Boolean);}
-function updateComposition(){const n=enteredNames().length,c=TEAM_COUNTS[n];$('count').textContent=fa(n);$('composition').textContent=c?`برای ${fa(n)} نفر: ${fa(c[0])} شهروند، ${fa(c[1])} مافیا، ${fa(c[2])} مستقل`:n===0?'نام‌ها را یکی‌یکی ثبت و تأیید کن.':`تعداد فعلی: ${fa(n)} نفر. برای شروع بازی باید بین ۱۰ تا ۲۰ اسم داشته باشی.`;}
+function enteredNames(){return stagedNames.map(x=>String(x||'').trim()).filter(Boolean);}
+function updateComposition(){const n=stagedNames.filter(x=>String(x||'').trim()).length,c=TEAM_COUNTS[n];$('count').textContent=fa(n);$('composition').textContent=c?`برای ${fa(n)} نفر: ${fa(c[0])} شهروند، ${fa(c[1])} مافیا، ${fa(c[2])} مستقل`:n===0?'نام‌ها را یکی‌یکی ثبت و تأیید کن.':`تعداد فعلی: ${fa(n)} نفر. برای شروع بازی باید بین ۱۰ تا ۲۰ اسم داشته باشی.`;}
 function renderNameReview(){
  const host=$('nameReview');host.classList.remove('hidden');
  host.innerHTML='<div class="name-review-title">فهرست بازیکنان — قابل ویرایش</div>'+stagedNames.map((name,index)=>'<div class="name-review-row"><input type="text" data-review-name="'+index+'" value="'+esc(name)+'" aria-label="نام بازیکن '+fa(index+1)+'"><button type="button" class="danger" data-remove-name="'+index+'">حذف</button></div>').join('')+
