@@ -260,6 +260,23 @@ body *,body *::before,body *::after{border-color:#ff3030!important;outline-color
 .mafia-intro-role-list{margin:12px 0 22px;padding:0 28px 0 0;text-align:right;color:#fff;line-height:2.3}
 .mafia-intro-role-list li{padding:3px 0;border-bottom:1px solid #ff303044}
 .mafia-intro-card button{width:100%;min-height:52px;background:#090909!important;color:#fff!important;border:1px solid #ff3030!important}
+
+/* Visibility fix: let the existing cinematic artwork read clearly on every screen */
+body{
+ background:
+  linear-gradient(180deg,rgba(0,0,0,.20) 0%,rgba(0,0,0,.42) 58%,rgba(0,0,0,.68) 100%),
+  url('assets/mafia-god-welcome.svg') center 22%/cover fixed no-repeat!important;
+}
+#welcome.welcome-card{
+ background:
+  linear-gradient(180deg,rgba(0,0,0,.08) 0%,rgba(0,0,0,.26) 46%,rgba(0,0,0,.62) 100%),
+  url('assets/mafia-god-welcome.svg') center 35%/cover no-repeat!important;
+}
+.card:not(#welcome){
+ background:linear-gradient(145deg,rgba(16,16,21,.78),rgba(0,0,0,.86))!important;
+ backdrop-filter:blur(3px);
+}
+
 </style><script src="fonts-loader.js?v=4" defer></script>
 </head><body>
 <header><h1>پشت نقاب</h1><p>هر چهره، یک راز</p></header><main>
@@ -298,7 +315,7 @@ body *,body *::before,body *::after{border-color:#ff3030!important;outline-color
    <path d="M180 25V183" stroke="#d7b36a" stroke-opacity=".55" stroke-dasharray="3 8"/>
   </svg>
  </div>
- <div class="welcome-brand"><span>مافیا</span><strong>گاد</strong></div>
+ <div class="welcome-brand"><strong>پشت نقاب</strong></div>
  <p class="tag">دستیار هوشمند بازی مافیا</p>
  <h2>به شبِ بازی خوش اومدی، گاد!</h2>
  <p class="welcome-lead">پشت هر نقاب، یک راز پنهانه؛ امشب مدیریت بازی دست توئه.</p>
