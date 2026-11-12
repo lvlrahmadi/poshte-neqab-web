@@ -228,6 +228,11 @@ body:has(#setup:not(.hidden)) main{min-height:100dvh;display:flex;align-items:ce
 #setup #nameStepHint{margin:14px 0 0;color:#fff!important}
 
 /* Private sequential role handoff: show only the current player's name or the next button */
+#game.role-handoff-mode #godDashboard,
+#game.role-handoff-mode #hostPanel,
+#game.role-handoff-mode #nextPhase,
+#game.role-handoff-mode #hostButton{display:none!important;visibility:hidden!important}
+
 #game.role-handoff-mode{min-height:72vh;display:flex;flex-direction:column;justify-content:center;align-items:stretch}
 #game.role-handoff-mode>:not(#playerList):not(#reveal){display:none!important}
 #game.role-handoff-mode #playerList.reveal-flow{display:flex;flex:1;min-height:58vh;align-items:center;justify-content:center;margin:0;padding:18px}
