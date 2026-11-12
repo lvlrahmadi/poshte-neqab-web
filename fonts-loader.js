@@ -3,7 +3,7 @@
   async function loadFont(name,path,weight='400'){
     const response=await fetch(path,{cache:'no-store'});
     if(!response.ok)throw new Error('Font file unavailable: '+path+' ('+response.status+')');
-    const encoded=(await response.text()).replace(/\\s+/g,'');
+    const encoded=(await response.text()).replace(/\s+/g,'');
     if(!encoded||encoded.length<1000)throw new Error('Font data is empty or incomplete: '+path);
     const face=new FontFace(name,'url(data:font/ttf;base64,'+encoded+')',{weight});
     await face.load();
