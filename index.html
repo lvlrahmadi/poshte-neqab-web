@@ -228,11 +228,12 @@ body:has(#setup:not(.hidden)) main{min-height:100dvh;display:flex;align-items:ce
 #setup #nameStepHint{margin:14px 0 0;color:#fff!important}
 
 /* Private sequential role handoff: show only the current player's name or the next button */
-#game:has(#playerList.reveal-flow){min-height:72vh;display:flex;flex-direction:column;justify-content:center;align-items:stretch}
-#game:has(#playerList.reveal-flow)>:not(#playerList):not(#reveal){display:none!important}
-#playerList.reveal-flow{display:flex;flex:1;min-height:58vh;align-items:center;justify-content:center;margin:0;padding:18px}
-#playerList.reveal-flow .reveal-player-name,#playerList.reveal-flow .reveal-next{width:100%;max-width:460px;min-height:82px;font-size:clamp(23px,6vw,32px);border:1px solid #c49a5c;background:linear-gradient(145deg,#3b2228,#151219);color:#f5e7cb;box-shadow:0 12px 36px #0009}
-#game:has(#playerList.reveal-flow) #reveal:not(.hidden){display:block!important;width:100%;margin:0}
+#game.role-handoff-mode{min-height:72vh;display:flex;flex-direction:column;justify-content:center;align-items:stretch}
+#game.role-handoff-mode>:not(#playerList):not(#reveal){display:none!important}
+#game.role-handoff-mode #playerList.reveal-flow{display:flex;flex:1;min-height:58vh;align-items:center;justify-content:center;margin:0;padding:18px}
+#game.role-handoff-mode #playerList .reveal-player-name,#game.role-handoff-mode #playerList .reveal-next{display:block;width:100%;max-width:460px;min-height:82px;font-size:clamp(23px,6vw,32px);border:1px solid #c49a5c;background:linear-gradient(145deg,#3b2228,#151219);color:#f5e7cb;box-shadow:0 12px 36px #0009}
+#game.role-handoff-mode #reveal:not(.hidden){display:block!important;width:100%;margin:0}
+#game.role-handoff-mode #reveal.hidden{display:none!important}
 </style><script src="fonts-loader.js?v=2" defer></script>
 </head><body>
 <header><h1>پشت نقاب</h1><p>هر چهره، یک راز</p></header><main>
