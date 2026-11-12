@@ -348,7 +348,7 @@ body:has(#setup:not(.hidden)) main{min-height:100dvh;display:flex;align-items:fl
 </section>
 
 </main><footer>پشت نقاب · دستیار گاد · ذخیره محلی روی همین دستگاه</footer>
-<script src="engine.js?v=14"></script><script src="app.js?v=31"></script>
+<script src="engine.js?v=14"></script><script src="app.js?v=32"></script>
 <script>
 (()=> {
  const game=document.getElementById('game');
@@ -379,10 +379,7 @@ body:has(#setup:not(.hidden)) main{min-height:100dvh;display:flex;align-items:fl
  if(phaseHead)views.home.append(phaseHead);
  if(phaseButtons)views.home.append(phaseButtons);
  if(endButtons)views.home.append(endButtons);
- if(playerTitle)views.players.append(playerTitle);
- if(playerHint)views.players.append(playerHint);
- if(players)views.players.append(players);
- if(reveal)views.players.append(reveal);
+ // Private role handoff stays outside #game so it remains visible while the God dashboard is hidden.
  if(host)views.control.append(host);
  if(reportTitle&&eventLog){const report=make('section','card');report.append(make('h2','view-title','گزارش اتفاقات بازی'));report.append(eventLog);views.report.append(report);}
  game.append(tabs,...Object.values(views));
