@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Validate game and build Android APK
 on:
   push:
     branches: ["**"]
@@ -6,7 +6,25 @@ on:
 permissions:
   contents: read
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check JavaScript syntax
+        run: |
+          node --check app.js
+          node --check engine.js
+          node --check build.js
+      - name: Validate offline bundle
+        run: npm run build
   build-apk:
+    if: github.event_name == 'workflow_dispatch'
+    needs: validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,13 +40,6 @@ jobs:
           java-version: "21"
       - name: Install dependencies
         run: npm install
-      - name: Check JavaScript syntax
-        run: |
-          node --check app.js
-          node --check engine.js
-          node --check build.js
-      - name: Build bundled offline assets
-        run: npm run build
       - name: Generate Android project
         run: npx cap add android
       - name: Sync Capacitor assets
