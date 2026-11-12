@@ -173,7 +173,7 @@ function renderNameFlow(){
  $('nameReview').classList.toggle('hidden',n===0);
  $('confirmRoster').classList.toggle('hidden',n<10);
  if(n)renderNameReview();
- $('names').value=stagedNames.join('\\n');updateComposition();
+ $('names').value=stagedNames.join('\n');updateComposition();
 }
 $('confirmPlayerName').onclick=()=>{
  const value=$('singlePlayerName').value.trim();
@@ -190,7 +190,7 @@ $('confirmRoster').onclick=()=>{
  if(stagedNames.some(x=>!x))return alert('نام خالی در فهرست وجود دارد؛ اصلاحش کن.');
  if(stagedNames.length<10||stagedNames.length>20)return alert('برای شروع بازی باید بین ۱۰ تا ۲۰ بازیکن داشته باشیم.');
  if(new Set(stagedNames.map(x=>x.toLocaleLowerCase())).size!==stagedNames.length)return alert('نام تکراری وجود دارد؛ فهرست را اصلاح کن.');
- $('names').value=stagedNames.join('\\n');updateComposition();$('makeGame').click();
+ $('names').value=stagedNames.join('\n');updateComposition();$('makeGame').click();
 };
 $('enterGodDesk').onclick=()=>{$('welcome').classList.add('hidden');$('setup').classList.remove('hidden');stagedNames=[];renderNameFlow();$('singlePlayerName').focus();};
 renderNameFlow();
