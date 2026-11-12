@@ -154,7 +154,6 @@ function log(message){game.logs.unshift({at:new Date().toISOString(),phase:game.
 function save(){if(game)localStorage.setItem('poshteNeghabV5',JSON.stringify(game));}
 let stagedNames=[];
 function enteredNames(){return stagedNames.map(x=>String(x||'').trim()).filter(Boolean);}
-function updateComposition(){const n=stagedNames.filter(x=>String(x||'').trim()).length,c=TEAM_COUNTS[n];$('count').textContent=fa(n);$('composition').textContent=c?`برای ${fa(n)} نفر: ${fa(c[0])} شهروند، ${fa(c[1])} مافیا، ${fa(c[2])} مستقل`:n===0?'نام‌ها را یکی‌یکی ثبت و تأیید کن.':`تعداد فعلی: ${fa(n)} نفر. برای شروع بازی باید بین ۱۰ تا ۲۰ اسم داشته باشی.`;}
 function renderNameReview(){
  const host=$('nameReview');host.classList.remove('hidden');
  host.innerHTML='<div class="name-review-title">فهرست بازیکنان — قابل ویرایش</div>'+stagedNames.map((name,index)=>'<div class="name-review-row"><input type="text" data-review-name="'+index+'" value="'+esc(name)+'" aria-label="نام بازیکن '+fa(index+1)+'"><button type="button" class="danger" data-remove-name="'+index+'">حذف</button></div>').join('')+
@@ -173,7 +172,7 @@ function renderNameFlow(){
  $('nameReview').classList.toggle('hidden',n===0);
  $('confirmRoster').classList.toggle('hidden',n<10);
  if(n)renderNameReview();
- $('names').value=stagedNames.join('\n');updateComposition();
+ $('names').value=stagedNames.join('\n');
 }
 $('confirmPlayerName').onclick=()=>{
  const value=$('singlePlayerName').value.trim();
@@ -190,7 +189,7 @@ $('confirmRoster').onclick=()=>{
  if(stagedNames.some(x=>!x))return alert('نام خالی در فهرست وجود دارد؛ اصلاحش کن.');
  if(stagedNames.length<10||stagedNames.length>20)return alert('برای شروع بازی باید بین ۱۰ تا ۲۰ بازیکن داشته باشیم.');
  if(new Set(stagedNames.map(x=>x.toLocaleLowerCase())).size!==stagedNames.length)return alert('نام تکراری وجود دارد؛ فهرست را اصلاح کن.');
- $('names').value=stagedNames.join('\n');updateComposition();$('makeGame').click();
+ $('names').value=stagedNames.join('\n');$('makeGame').click();
 };
 $('enterGodDesk').onclick=()=>{$('welcome').classList.add('hidden');$('setup').classList.remove('hidden');stagedNames=[];renderNameFlow();$('singlePlayerName').focus();};
 renderNameFlow();
