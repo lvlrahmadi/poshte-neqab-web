@@ -219,33 +219,41 @@ function renderNameReview(){
 function renderNameFlow(){
  const n=stagedNames.length;
  $('singlePlayerName').value='';
- $('singlePlayerName').placeholder='نام بازیکن '+fa(n+1);
- $('nameStepHint').textContent='نام بازیکن '+fa(n+1)+' را وارد کن؛ بعد از تأیید، سراغ نفر بعدی می‌رویم.';
+ $('nameStepTitle').textContent='نام پلیر '+fa(n+1);
+ $('singlePlayerName').placeholder='نام پلیر '+fa(n+1);
+ $('singlePlayerName').setAttribute('aria-label','نام پلیر '+fa(n+1));
+ $('nameStepHint').textContent=n<8?'پلیر '+fa(n+1)+' از حداقل ۸ پلیر':'تعداد ثبت‌شده: '+fa(n)+' پلیر';
+ $('confirmPlayerName').textContent='پلیر بعدی';
  $('confirmPlayerName').classList.toggle('hidden',n>=30);
- $('finishNameEntry').classList.toggle('hidden',n<8);
- $('nameReview').classList.toggle('hidden',n===0);
+ $('confirmRoster').textContent='پلیرها وارد شدن و شروع بازی';
  $('confirmRoster').classList.toggle('hidden',n<8);
- if(n)renderNameReview();
- $('names').value=stagedNames.join('\n');
+ $('names').value=stagedNames.join('\\n');
 }
 $('confirmPlayerName').onclick=()=>{
  const value=$('singlePlayerName').value.trim();
- if(!value)return alert('اول نام بازیکن را وارد کن.');
+ if(!value)return alert('نام پلیر را وارد کن.');
  if(stagedNames.some(x=>x.toLocaleLowerCase()===value.toLocaleLowerCase()))return alert('این نام قبلاً ثبت شده؛ اسم تکراری وارد نکن.');
- if(stagedNames.length>=30)return alert('حداکثر ۳۰ بازیکن مجاز است.');
- stagedNames.push(value);renderNameFlow();$('singlePlayerName').focus();
+ if(stagedNames.length>=30)return alert('حداکثر ۳۰ پلیر مجاز است.');
+ stagedNames.push(value);
+ renderNameFlow();
+ $('singlePlayerName').focus();
 };
 $('singlePlayerName').addEventListener('keydown',e=>{if(e.key==='Enter')$('confirmPlayerName').click();});
-$('finishNameEntry').onclick=()=>{renderNameReview();$('confirmRoster').classList.remove('hidden');};
 $('confirmRoster').onclick=()=>{
- const fields=[...$('nameReview').querySelectorAll('[data-review-name]')];
- fields.forEach(el=>{stagedNames[Number(el.dataset.reviewName)]=el.value.trim();});
- if(stagedNames.some(x=>!x))return alert('نام خالی در فهرست وجود دارد؛ اصلاحش کن.');
- if(stagedNames.length<8||stagedNames.length>30)return alert('برای شروع بازی باید بین ۸ تا ۳۰ بازیکن داشته باشیم.');
- if(new Set(stagedNames.map(x=>x.toLocaleLowerCase())).size!==stagedNames.length)return alert('نام تکراری وجود دارد؛ فهرست را اصلاح کن.');
- $('names').value=stagedNames.join('\n');$('makeGame').click();
+ if(stagedNames.length<8||stagedNames.length>30)return alert('برای شروع بازی باید بین ۸ تا ۳۰ پلیر داشته باشیم.');
+ if(stagedNames.some(x=>!x))return alert('نام خالی در فهرست وجود دارد.');
+ if(new Set(stagedNames.map(x=>x.toLocaleLowerCase())).size!==stagedNames.length)return alert('نام تکراری وجود دارد.');
+ $('names').value=stagedNames.join('\\n');
+ $('makeGame').click();
 };
-$('enterGodDesk').onclick=()=>{$('welcome').classList.add('hidden');$('setup').classList.remove('hidden');stagedNames=[];renderNameFlow();$('singlePlayerName').focus();};
+$('enterGodDesk').textContent='شروع بازی';
+$('enterGodDesk').onclick=()=>{
+ $('welcome').classList.add('hidden');
+ $('setup').classList.remove('hidden');
+ stagedNames=[];
+ renderNameFlow();
+ $('singlePlayerName').focus();
+};
 renderNameFlow();
 function makeDeck(n){const [c,m,s]=TEAM_COUNTS[n],groups=[ROLES.filter(r=>r.team==='شهروند'),ROLES.filter(r=>r.team==='مافیا'),ROLES.filter(r=>r.team==='مستقل')],counts=[c,m,s],deck=[];groups.forEach((bank,g)=>{const picked=shuffle(bank);for(let i=0;i<counts[g];i++)deck.push(picked[i%picked.length]);});return shuffle(deck);}
 $('makeGame').onclick=()=>{const names=enteredNames(),n=names.length;if(!TEAM_COUNTS[n])return alert(`برای ساخت بازی باید بین ۸ تا ۳۰ نام وارد کنی. تعداد فعلی: ${fa(n)} نفر.`);if(new Set(names).size!==n)return alert('نام تکراری وجود دارد؛ لطفاً اسم‌های تکراری را اصلاح کن.');if(game&&!confirm('بازی جدید ساخته شود؟ ذخیره بازی قبلی جایگزین می‌شود.'))return;const deck=makeDeck(n);game={version:6,players:names.map((name,i)=>({id:`p${i+1}`,name,role:deck[i].name,team:deck[i].team,alive:true,converted:false,used:{},status:{}})),viewedRoles:[],revealIndex:0,voiceIntroPlayed:false,introCapo:{active:false,stage:'speech',votes:{},tieChoices:{},gunHolder:null,suspects:[],liveBullet:null},phase:'شب معارفه مافیا',round:1,logs:[],actions:[],independentWins:[],rules:{deceiverRound:6,deceiverAliveLimit:4,opportunistRound:5,opportunistMafiaEliminations:2},createdAt:new Date().toISOString()};undoStack=[];log('بازی جدید ساخته شد؛ نقش‌ها به‌صورت تصادفی پخش شدند.');$('setup').classList.add('hidden');$('game').classList.remove('hidden');render();};
