@@ -1,7 +1,7 @@
 'use strict';
 const $=id=>document.getElementById(id);
 const Engine=window.PoshteNeghabEngine;
-const TEAM_COUNTS=new Set(Array.from({length:23},(_,i)=>i+8));
+const TEAM_COUNTS=new Set(Array.from({length:19},(_,i)=>i+12));
 const ROLES=[
 {name:'کارآگاه',team:'شهروند',desc:'هر شب استعلام تیمی یک بازیکن را می‌گیرد. قاب‌سازی، پدرخوانده و نفوذی می‌توانند نتیجه را تغییر دهند.',action:'investigate'},
 {name:'پزشک',team:'شهروند',desc:'هر شب یک نفر را از حمله نجات می‌دهد؛ یک پزشک نمی‌تواند دو شب پیاپی یک هدف را نجات دهد.',action:'protect_doctor'},
@@ -220,19 +220,65 @@ function renderNameReview(){
  host.querySelectorAll('[data-remove-name]').forEach(el=>el.addEventListener('click',()=>{stagedNames.splice(Number(el.dataset.removeName),1);renderNameFlow();}));
  $('addPlayerNameBtn').onclick=()=>{const value=$('addPlayerName').value.trim();if(!value)return alert('نام بازیکن را وارد کن.');if(stagedNames.some(x=>x.toLocaleLowerCase()===value.toLocaleLowerCase()))return alert('این نام قبلاً ثبت شده است.');if(stagedNames.length>=30)return alert('حداکثر ۳۰ بازیکن می‌توانند وارد بازی شوند.');rememberPlayerName(value);stagedNames.push(value);renderNameFlow();};
 }
+
+const PLAYER_AVATAR_PALETTES={
+ skin:['#f2c9a5','#dca77f','#bd805c','#8d5b45','#e5b995','#a96f54'],
+ hair:['#211b1a','#3b2922','#76523a','#17171d','#b28a52','#5c3430'],
+ clothes:['#293c4a','#5a2830','#3e4936','#47364d','#8a653b','#28333a'],
+};
+function playerSeatPortrait(index){
+ const p=PLAYER_AVATAR_PALETTES,skin=p.skin[index%p.skin.length],hair=p.hair[(index*5+Math.floor(index/3))%p.hair.length],shirt=p.clothes[(index*3+Math.floor(index/4))%p.clothes.length];
+ const style=index%6,faceRx=[22,20,23,21,24,19][style],faceRy=[27,29,26,28,25,30][style];
+ const hairShapes=[
+  '<path d="M35 61 Q32 25 61 21 Q88 18 91 54 L86 45 Q75 36 63 39 Q49 34 38 49Z" />',
+  '<path d="M35 57 Q29 22 61 20 Q91 20 90 49 Q77 36 63 34 Q47 38 35 57Z"/><path d="M76 31 Q91 34 88 54 L80 47Z"/>',
+  '<path d="M34 61 Q28 20 61 18 Q94 20 91 61 L84 51 79 38 70 45 61 34 51 46 43 40Z"/><circle cx="39" cy="39" r="7"/><circle cx="84" cy="37" r="8"/>',
+  '<path d="M37 55 Q34 24 60 22 Q86 21 88 54 L82 43 Q65 51 44 43Z"/>',
+  '<path d="M34 61 Q27 22 61 19 Q96 22 91 65 Q83 53 82 43 Q72 36 61 39 Q46 35 38 48Z"/><path d="M36 53 Q27 77 38 92 L43 72Z"/>',
+  '<path d="M34 62 Q30 22 61 19 Q94 21 89 60 L82 46 Q73 35 61 39 Q48 34 38 48Z"/><path d="M82 48 Q94 67 83 91 L77 70Z"/>'
+ ][style];
+ const beard=index%5===0?'<path d="M43 77 Q61 96 79 77 Q77 94 61 98 Q46 94 43 77Z" fill="'+hair+'"/>':(index%5===2?'<path d="M46 82 Q61 91 76 82 L73 91 Q61 99 49 91Z" fill="'+hair+'"/>':'');
+ const glasses=index%4===1?'<g fill="none" stroke="#2a201d" stroke-width="2.3"><rect x="42" y="57" width="15" height="10" rx="4"/><rect x="65" y="57" width="15" height="10" rx="4"/><path d="M57 61H65"/></g>':'';
+ const accessory=index%6===3?'<path d="M40 42 Q61 8 83 42" fill="none" stroke="#c7a15f" stroke-width="3"/>':(index%6===5?'<circle cx="83" cy="73" r="3" fill="#d7b36a"/>':'');
+ return '<svg viewBox="0 0 122 156" role="img" aria-label="شخصیت متفاوت روی صندلی شماره '+(index+1)+'">'+
+ '<defs><linearGradient id="chair'+index+'" x2="0" y2="1"><stop stop-color="#75502d"/><stop offset="1" stop-color="#241719"/></linearGradient></defs>'+
+ '<path d="M22 145V57 Q22 12 61 12 Q100 12 100 57V145Z" fill="url(#chair'+index+')" stroke="#c39a5b" stroke-width="2"/>'+
+ '<path d="M29 146V113 Q61 100 93 113V146Z" fill="#171317" stroke="#9c7544" stroke-width="2"/>'+
+ '<path d="M40 146L35 154M82 146L87 154" stroke="#c39a5b" stroke-width="4" stroke-linecap="round"/>'+
+ '<path d="M37 103 Q61 88 85 103 L96 133 Q61 146 26 133Z" fill="'+shirt+'" stroke="#c39a5b" stroke-width="1.5"/>'+
+ '<path d="M52 91V105L61 114 70 105V91Z" fill="'+skin+'"/>'+
+ '<ellipse cx="61" cy="61" rx="'+faceRx+'" ry="'+faceRy+'" fill="'+skin+'" stroke="#714b3c" stroke-width="1.2"/>'+
+ '<path d="M39 59 Q37 48 43 40" stroke="'+skin+'" stroke-width="5" fill="none"/><path d="M83 59 Q85 48 79 40" stroke="'+skin+'" stroke-width="5" fill="none"/>'+
+ '<g fill="'+hair+'" stroke="'+hair+'" stroke-linejoin="round">'+hairShapes+'</g>'+
+ '<path d="M48 61h7M68 61h7" stroke="#30211d" stroke-width="2.4" stroke-linecap="round"/>'+
+ '<path d="M61 64l-2 8 4 1" fill="none" stroke="#9b654e" stroke-width="1.4"/>'+
+ '<path d="M54 79 Q61 '+(index%2===0?'83':'76')+' 68 79" fill="none" stroke="#824b42" stroke-width="1.7" stroke-linecap="round"/>'+
+ beard+glasses+accessory+
+ '<path d="M43 106L61 124 79 106" fill="none" stroke="#d5b16d" stroke-width="1.6"/>'+
+ '</svg>';
+}
+function renderPlayerSeats(){
+ const gallery=$('playerSeatGallery'),grid=$('playerSeatGrid'),count=$('playerSeatCount');
+ if(!gallery||!grid||!count)return;
+ gallery.classList.toggle('hidden',stagedNames.length===0);
+ count.textContent=fa(stagedNames.length)+' نفر';
+ grid.innerHTML=stagedNames.map((name,index)=>'<div class="player-seat">'+playerSeatPortrait(index)+'<span class="player-seat-name">'+esc(name)+'</span><span class="player-seat-number">صندلی '+fa(index+1)+'</span></div>').join('');
+}
+
 function renderNameFlow(){
  const n=stagedNames.length;
  $('singlePlayerName').value='';
  $('nameStepTitle').textContent='نام پلیر '+fa(n+1);
  $('singlePlayerName').placeholder='نام پلیر '+fa(n+1);
  $('singlePlayerName').setAttribute('aria-label','نام پلیر '+fa(n+1));
- $('nameStepHint').textContent=n<8?'پلیر '+fa(n+1)+' از حداقل ۸ پلیر':'تعداد ثبت‌شده: '+fa(n)+' پلیر';
+ $('nameStepHint').textContent=n<12?'پلیر '+fa(n+1)+' از حداقل ۱۲ پلیر':'تعداد ثبت‌شده: '+fa(n)+' پلیر';
  $('confirmPlayerName').textContent='پلیر بعدی';
  $('confirmPlayerName').classList.toggle('hidden',n>=30);
  $('confirmRoster').textContent='پلیرها وارد شدن و شروع بازی';
- $('confirmRoster').classList.toggle('hidden',n<8);
+ $('confirmRoster').classList.toggle('hidden',n<12);
  $('names').value=stagedNames.join('\\n');
  renderSavedPlayerNames();
+ renderPlayerSeats();
 }
 $('confirmPlayerName').onclick=()=>{
  const value=$('singlePlayerName').value.trim();
@@ -246,7 +292,7 @@ $('confirmPlayerName').onclick=()=>{
 };
 $('singlePlayerName').addEventListener('keydown',e=>{if(e.key==='Enter')$('confirmPlayerName').click();});
 $('confirmRoster').onclick=()=>{
- if(stagedNames.length<8||stagedNames.length>30)return alert('برای شروع بازی باید بین ۸ تا ۳۰ پلیر داشته باشیم.');
+ if(stagedNames.length<12||stagedNames.length>30)return alert('برای شروع بازی باید بین ۱۲ تا ۳۰ پلیر داشته باشیم.');
  if(stagedNames.some(x=>!x))return alert('نام خالی در فهرست وجود دارد.');
  if(new Set(stagedNames.map(x=>x.toLocaleLowerCase())).size!==stagedNames.length)return alert('نام تکراری وجود دارد.');
  $('names').value=stagedNames.join('\\n');
